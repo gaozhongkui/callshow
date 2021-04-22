@@ -7,7 +7,7 @@ import com.epiphany.callshow.App
 /**
  * 请求用于YouTube API KEY的辅助类
  */
-object HttpAPIKeyHelper {
+object APIKeyHelper {
     private const val SHARE_FILE_NAME = "app_api_key"
     private const val KEY_CURRENT_API_KEY = "key_current_api_key"
 
