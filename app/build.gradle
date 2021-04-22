@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion COMPILE_SDKVERSION
+    buildToolsVersion BUILDTOOLS_VERSION
 
     defaultConfig {
         applicationId "com.epiphany.callshow"
-        minSdkVersion 23
-        targetSdkVersion 26
+        minSdkVersion MINSDK_VERSION
+        targetSdkVersion TARGETSDK_VERSION
         versionCode 1
         versionName getVersionName()
 
