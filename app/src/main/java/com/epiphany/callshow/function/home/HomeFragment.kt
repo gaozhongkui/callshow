@@ -1,10 +1,12 @@
 package com.epiphany.callshow.function.home
 
 import android.os.Bundle
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.epiphany.callshow.R
 import com.epiphany.callshow.common.base.BaseFragment
+import com.epiphany.callshow.common.utils.StatusBarUtil
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentHomeBinding
 
@@ -28,6 +30,16 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             binding.recyclerView.layoutManager =
                 StaggeredGridLayoutManager(SPAN_COUNT, RecyclerView.VERTICAL)
             binding.recyclerView.adapter = mVideoAdapter
+        }
+        initStatusBarLayout()
+    }
+
+    private fun initStatusBarLayout() {
+        context?.apply {
+            StatusBarUtil.setTranslucentStatus(activity!!, true)
+            val layoutParams = binding.rootView.layoutParams as FrameLayout.LayoutParams
+            layoutParams.topMargin = SystemInfo.getStatusBarHeight(this)
+            binding.rootView.layoutParams = layoutParams
         }
     }
 

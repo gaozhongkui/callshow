@@ -15,7 +15,7 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
     private val mHomFragments = mutableMapOf<Int, Fragment>()
 
     //Tab的最后一个展示的序号
-    private var mTabLastIndex = 0
+    private var mTabLastIndex = -1
 
     override fun getBindLayout(): Int = R.layout.activity_main
 
