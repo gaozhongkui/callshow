@@ -1,5 +1,6 @@
 package com.epiphany.callshow.function.home
 
+import android.os.Bundle
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.epiphany.callshow.R
@@ -66,8 +67,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    private companion object {
+    companion object {
         private const val SPAN_COUNT = 2
+
+        fun newInstance(bundle: Bundle? = null): HomeFragment {
+            val fragment = HomeFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
 }
