@@ -18,6 +18,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     override fun initView() {
         initLayout()
         initDataObserver()
+        initLayoutListener()
     }
 
     private fun initLayout() {
@@ -34,6 +35,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             mVideoAdapter?.setDataList(it)
         })
         viewModel.loadVideoData()
+    }
+
+    private fun initLayoutListener() {
+
     }
 
     private companion object {
