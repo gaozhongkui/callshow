@@ -36,6 +36,7 @@ object ApiClient {
             search.fields =
                 "items(snippet/title,snippet/thumbnails,snippet/resourceId/videoId),nextPageToken,pageInfo,prevPageToken"
             search.playlistId = playListId
+            search.pageToken = nextPageToken
             val searchResponse = try {
                 search.execute()
             } catch (e: GoogleJsonResponseException) {

@@ -37,8 +37,10 @@ class HomeVideoAdapter(cxt: Context) : RecyclerView.Adapter<HomeVideoAdapter.Nor
      * 设置数据
      */
     @MainThread
-    fun setDataList(data: List<VideoItemInfo>) {
-        mDataList.clear()
+    fun setDataList(data: List<VideoItemInfo>, isRefresh: Boolean) {
+        if (isRefresh) {
+            mDataList.clear()
+        }
         mDataList.addAll(data)
         notifyDataSetChanged()
     }
