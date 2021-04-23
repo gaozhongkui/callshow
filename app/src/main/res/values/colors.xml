@@ -5,4 +5,31 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="color_link_text">#FF00B548</color>
+
+    <color name="black_alpha_90">#E6000000</color>
+    <color name="black_alpha_80">#CC000000</color>
+    <color name="black_alpha_70">#B3000000</color>
+    <color name="black_alpha_60">#99000000</color>
+    <color name="black_alpha_54">#89000000</color>
+    <color name="black_alpha_50">#80000000</color>
+    <color name="black_alpha_40">#66000000</color>
+    <color name="black_alpha_30">#4D000000</color>
+    <color name="black_alpha_20">#33000000</color>
+    <color name="black_alpha_12">#1E000000</color>
+    <color name="black_alpha_10">#1A000000</color>
+    <color name="black_alpha_8">#14000000</color>
+    <color name="black_alpha_6">#10000000</color>
+    <color name="black_alpha_5">#0f000000</color>
+    <color name="black_alpha_4">#0A000000</color>
+
+    <color name="white_alpha_90">#E6FFFFFF</color>
+    <color name="white_alpha_80">#CCFFFFFF</color>
+    <color name="white_alpha_70">#B3FFFFFF</color>
+    <color name="white_alpha_60">#99FFFFFF</color>
+    <color name="white_alpha_50">#80FFFFFF</color>
+    <color name="white_alpha_40">#66FFFFFF</color>
+    <color name="white_alpha_30">#4DFFFFFF</color>
+    <color name="white_alpha_20">#33FFFFFF</color>
+    <color name="white_alpha_10">#1AFFFFFF</color>
+    <color name="white_alpha_5">#0FFFFFFF</color>
 </resources>
