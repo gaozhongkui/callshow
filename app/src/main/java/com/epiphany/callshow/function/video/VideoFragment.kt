@@ -183,7 +183,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
 
     companion object {
         private const val TAG = "video_tag"
-        private const val EXTRA_VIDEO_INFO = "extra_video_info";
+        private const val EXTRA_VIDEO_INFO = "extra_video_info"
         fun newInstance(videoInfo: VideoItemInfo): VideoFragment {
             val fragment = VideoFragment()
             val bundle = Bundle()

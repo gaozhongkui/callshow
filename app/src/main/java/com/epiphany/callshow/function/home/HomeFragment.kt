@@ -2,8 +2,6 @@ package com.epiphany.callshow.function.home
 
 import android.os.Bundle
 import android.widget.FrameLayout
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.epiphany.callshow.R
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.utils.StatusBarUtil
@@ -11,7 +9,6 @@ import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
-    private var mVideoAdapter: HomeVideoAdapter? = null
     override fun getBindLayout(): Int = R.layout.fragment_home
 
     override fun getViewModelClass(): Class<HomeViewModel> {
@@ -19,18 +16,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
 
     override fun initView() {
-        initLayout()
-        initDataObserver()
-        initLayoutListener()
-    }
-
-    private fun initLayout() {
-        context?.apply {
-            mVideoAdapter = HomeVideoAdapter(this)
-            binding.recyclerView.layoutManager =
-                StaggeredGridLayoutManager(SPAN_COUNT, RecyclerView.VERTICAL)
-            binding.recyclerView.adapter = mVideoAdapter
-        }
         initStatusBarLayout()
     }
 
@@ -43,45 +28,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    private fun initDataObserver() {
-        viewModel.getVideoDataList().observe(this, {
-            if (!SystemInfo.isValidActivity(activity)) {
-                return@observe
-            }
-            val isRefresh = !viewModel.isLoadDataMoreState()
-            if (binding.smartRefresh.isRefreshing) {
-                binding.smartRefresh.finishRefresh()
-            }
-            mVideoAdapter?.setDataList(it, isRefresh)
-            //判断如果为刷新状态时，则回到顶部
-            if (isRefresh) {
-                binding.recyclerView.smoothScrollToPosition(0)
-            }
-            if (binding.smartRefresh.isLoading) {
-                binding.smartRefresh.finishLoadMore()
-            }
-        })
-        viewModel.loadVideoData()
-    }
-
-    private fun initLayoutListener() {
-        binding.smartRefresh.setOnRefreshListener {
-            if (!SystemInfo.isValidActivity(activity)) {
-                return@setOnRefreshListener
-            }
-            viewModel.onRefreshVideoData()
-        }
-        binding.smartRefresh.setOnLoadMoreListener {
-            if (!SystemInfo.isValidActivity(activity)) {
-                return@setOnLoadMoreListener
-            }
-            viewModel.onLoadMoreVideoData()
-        }
-    }
-
     companion object {
-        private const val SPAN_COUNT = 2
-
         fun newInstance(bundle: Bundle? = null): HomeFragment {
             val fragment = HomeFragment()
             fragment.arguments = bundle
