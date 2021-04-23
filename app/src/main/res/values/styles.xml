@@ -17,4 +17,9 @@
         <item name="android:windowBackground">@android:color/transparent</item><!--除去背景色-->
     </style>
 
+
+    <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">@dimen/sp_16</item>
+        <item name="textAllCaps">false</item>
+    </style>
 </resources>

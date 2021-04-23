@@ -2,15 +2,11 @@ package com.epiphany.callshow.function.video
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.epiphany.callshow.R
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentVideoDisplayBinding
-import com.epiphany.callshow.function.home.HomeFragment
-import com.epiphany.callshow.function.home.HomeVideoAdapter
 
 class VideoDisplayFragment : BaseFragment<VideoDisplayViewModel, FragmentVideoDisplayBinding>() {
     private var mVideoDisplayAdapter: VideoDisplayAdapter? = null
