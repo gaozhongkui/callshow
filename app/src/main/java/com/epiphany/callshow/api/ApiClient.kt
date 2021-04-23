@@ -4,6 +4,7 @@ import android.util.Log
 import com.epiphany.callshow.BuildConfig
 import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.youtube.YouTube
+import com.google.api.services.youtube.model.PlaylistItemListResponse
 import java.io.IOException
 
 /**
@@ -18,7 +19,7 @@ object ApiClient {
     /**
      * 获取指定的视频列表
      */
-    fun getVideos(playListId: String, nextPageToken: String? = null) {
+    fun getVideos(playListId: String, nextPageToken: String? = null): PlaylistItemListResponse? {
         val l = System.currentTimeMillis()
         val youtube = YouTube.Builder(
             Auth.HTTP_TRANSPORT, Auth.JSON_FACTORY
@@ -47,19 +48,10 @@ object ApiClient {
                 }
                 null
             }
-
-            searchResponse?.let {
-                for (playlistItem in it.items) {
-                    Log.d(TAG, "getVideos() called $playlistItem")
-                }
-            }
+            Log.d(TAG, "getVideos() called $searchResponse")
+            return searchResponse
         }
-
-        Log.d(
-            TAG,
-            "getVideos() called with: 耗时:"+(System.currentTimeMillis()-l)
-        )
-
+        return null
     }
 
 }
