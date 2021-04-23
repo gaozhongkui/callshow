@@ -1,6 +1,7 @@
 package com.epiphany.callshow.api
 
 import com.epiphany.callshow.model.VideoItemInfo
+import com.epiphany.callshow.model.VideoRealPathInfo
 import com.epiphany.jextractor.YoutubeDownloader
 import com.epiphany.jextractor.model.YoutubeVideo
 import com.google.api.services.youtube.model.PlaylistItem
@@ -26,6 +27,15 @@ object VideoHelper {
         return mDownloader.getVideo(videoId)
     }
 
+    /**
+     * 获取视频的真实地址
+     */
+    fun getVideoRealPathStr(videoId: String): VideoRealPathInfo {
+        val videoInfo = getVideoRealPath(videoId)
+        val audioPath = videoInfo.audioFormats()[2].url()
+        val videoUrl = videoInfo.formats()[2].url()
+        return VideoRealPathInfo(videoUrl, audioPath)
+    }
 
     /**
      * 转换数据格式
@@ -33,7 +43,8 @@ object VideoHelper {
     fun convertPlaylistItemToVideoInfo(playlist: List<PlaylistItem>): List<VideoItemInfo> {
         val resultList = mutableListOf<VideoItemInfo>()
         for (item in playlist) {
-            val thumbnails = item.snippet.thumbnails ?: continue
+            val snippet = item.snippet
+            val thumbnails = snippet.thumbnails ?: continue
             var thumbnail = thumbnails.maxres
             if (thumbnail == null) {
                 thumbnail = thumbnails.high
@@ -45,7 +56,8 @@ object VideoHelper {
                 thumbnail = thumbnails.default
             }
             thumbnail?.apply {
-                val videoInfo = VideoItemInfo(url, width, height)
+                val videoInfo =
+                    VideoItemInfo(snippet.resourceId.videoId, url, width, height, snippet.title)
                 resultList.add(videoInfo)
             }
         }
