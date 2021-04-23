@@ -57,6 +57,37 @@ class VideoDisplayViewModel : BaseViewModel() {
         }
     }
 
+    /**
+     * 刷新视频数据
+     */
+    fun onRefreshVideoData() {
+        loadVideoData()
+    }
+
+
+    /**
+     * 加载更多数据
+     */
+    fun onLoadMoreVideoData() {
+        GlobalScope.launch {
+            val response = ApiClient.getVideos(PLAY_LIST_ID, mNextPageToken)
+            if (response == null) {
+                Log.d(TAG, "loadVideoData() called")
+                return@launch
+            }
+            //记录下一屏幕的数据
+            mNextPageToken = response.nextPageToken
+            isLoadDataMoreState = true
+            val items = response.items
+            //转换数据格式
+            val videos = convertPlaylistItemToVideoInfo(items)
+            withContext(Dispatchers.Main) {
+                mVideoDataList.value = videos
+            }
+        }
+    }
+
+
     companion object {
         private const val PLAY_LIST_ID = "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn"
         private const val TAG = "HomeViewModel"
