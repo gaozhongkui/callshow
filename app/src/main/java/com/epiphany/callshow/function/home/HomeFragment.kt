@@ -25,13 +25,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private fun initLayout() {
         mHomePageAdapter = HomePageAdapter(childFragmentManager)
         binding.viewPager.adapter = mHomePageAdapter
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
         initStatusBarLayout()
     }
 
     private fun initDataObserver() {
         viewModel.getTabDataList().observe(this, {
             mHomePageAdapter?.setDataList(it)
+            //设置绑定到Tab上
+            binding.tabLayout.setViewPager(binding.viewPager)
         })
         viewModel.loadTabData()
     }

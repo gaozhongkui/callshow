@@ -100,5 +100,8 @@ dependencies {
     //引入Lottie的库
     implementation 'com.airbnb.android:lottie:3.5.0'
 
+    //smart tab
+    implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
+
 
 }

@@ -19,13 +19,21 @@
                 android:theme="@style/ThemeOverlay.AppCompat.Light"
                 app:elevation="@dimen/dp_0">
 
-                <com.google.android.material.tabs.TabLayout
+                <com.ogaclejapan.smarttablayout.SmartTabLayout
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_36"
                     app:layout_scrollFlags="scroll|enterAlways"
-                    app:tabMode="scrollable"
-                    app:tabTextAppearance="@style/TabLayoutTextStyle" />
+                    app:stl_defaultTabTextAllCaps="false"
+                    app:stl_defaultTabTextColor="@drawable/text_home_top_tab_title"
+                    app:stl_defaultTabTextSize="@dimen/sp_14"
+                    app:stl_dividerThickness="@dimen/dp_0"
+                    app:stl_drawDecorationAfterTab="false"
+                    app:stl_indicatorColor="@color/theme_color"
+                    app:stl_indicatorCornerRadius="@dimen/dp_6"
+                    app:stl_indicatorInterpolation="linear"
+                    app:stl_indicatorThickness="@dimen/dp_3"
+                    app:stl_underlineThickness="@dimen/dp_0" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.viewpager.widget.ViewPager
