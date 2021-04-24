@@ -7,6 +7,7 @@ import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.utils.StatusBarUtil
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentHomeBinding
+import com.google.android.material.appbar.AppBarLayout
 
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private var mHomePageAdapter: HomePageAdapter? = null
@@ -38,9 +39,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private fun initStatusBarLayout() {
         context?.apply {
             StatusBarUtil.setTranslucentStatus(activity!!, true)
-            val layoutParams = binding.rootView.layoutParams as FrameLayout.LayoutParams
+            val layoutParams = binding.tabLayout.layoutParams as AppBarLayout.LayoutParams
             layoutParams.topMargin = SystemInfo.getStatusBarHeight(this)
-            binding.rootView.layoutParams = layoutParams
+            binding.tabLayout.layoutParams = layoutParams
         }
     }
 

@@ -1,6 +1,7 @@
 package com.epiphany.callshow.function.home
 
 import android.os.Bundle
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.epiphany.callshow.R
@@ -48,10 +49,14 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
         mPlayListId?.apply {
             viewModel.setPlayListId(this)
         }
+        //展示加载Loading布局
+        binding.loadingView.visibility = View.VISIBLE
         viewModel.getVideoDataList().observe(this, {
             if (!SystemInfo.isValidActivity(activity)) {
                 return@observe
             }
+            //隐藏Loading布局
+            binding.loadingView.visibility = View.GONE
             val isRefresh = !viewModel.isLoadDataMoreState()
             if (binding.smartRefresh.isRefreshing) {
                 binding.smartRefresh.finishRefresh()
