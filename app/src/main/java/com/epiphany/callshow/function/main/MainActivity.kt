@@ -1,5 +1,6 @@
 package com.epiphany.callshow.function.main
 
+import android.annotation.SuppressLint
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.epiphany.callshow.R
@@ -45,11 +46,21 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
     /**
      * 设置页面的布局展示
      */
+    @SuppressLint("ResourceType")
     private fun setFragmentPosition(position: Int) {
 
         //判断如果相同时，则直接返回
         if (mTabLastIndex == position) {
             return
+        }
+
+        //判断是否为视频Tab，如果是则设置不同的颜色
+        if (position == TAB_VIDEO) {
+            binding.llBottomBar.itemTextColor =
+                resources.getColorStateList(R.drawable.text_home_video_tab_title, theme)
+        } else {
+            binding.llBottomBar.itemTextColor =
+                resources.getColorStateList(R.drawable.text_home_tab_title, theme)
         }
 
         var fragment = mHomFragments[position]
