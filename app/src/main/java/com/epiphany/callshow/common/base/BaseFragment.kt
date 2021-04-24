@@ -22,7 +22,7 @@ abstract class BaseFragment<T : ViewModel, S : ViewDataBinding> : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, getBindLayout(), container, false)
-        viewModel = ViewModelProvider(this.activity!!).get(getViewModelClass())
+        viewModel = ViewModelProvider(this).get(getViewModelClass())
         initView()
         return binding.root
     }

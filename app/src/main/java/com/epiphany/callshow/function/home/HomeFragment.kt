@@ -33,6 +33,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
             mHomePageAdapter?.setDataList(it)
             //设置绑定到Tab上
             binding.tabLayout.setViewPager(binding.viewPager)
+            //设置缓冲的大小
+            binding.viewPager.offscreenPageLimit = (it.size * .3f).toInt()
         })
         viewModel.loadTabData()
     }

@@ -70,7 +70,6 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
                 binding.smartRefresh.finishLoadMore()
             }
         })
-        viewModel.loadVideoData()
     }
 
     private fun initLayoutListener() {
@@ -86,6 +85,22 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
             }
             viewModel.onLoadMoreVideoData()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //判断没有数据时，则进行数据请求
+        mVideoAdapter?.apply {
+            if (itemCount <= 0) {
+                viewModel.loadVideoData()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mVideoAdapter?.releaseData()
+        mVideoAdapter = null
     }
 
     companion object {
