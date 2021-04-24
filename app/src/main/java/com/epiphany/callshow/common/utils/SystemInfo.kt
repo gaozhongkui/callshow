@@ -10,13 +10,16 @@ import android.os.Looper
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.TextUtils
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import com.epiphany.callshow.App
 import java.math.BigInteger
 import java.security.SecureRandom
 import java.util.*
+
 
 object SystemInfo {
 
@@ -45,7 +48,7 @@ object SystemInfo {
         context?.apply {
             try {
                 val manager =
-                        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
                 val networkinfo = manager.activeNetworkInfo
                 if (networkinfo != null && networkinfo.isConnectedOrConnecting) {
                     return true
@@ -69,8 +72,8 @@ object SystemInfo {
 
     fun checkPermission(permissionName: String): Boolean {
         val isGranted = App.getApp().packageManager.checkPermission(
-                App.getApp()!!.packageName,
-                permissionName
+            App.getApp()!!.packageName,
+            permissionName
         )
         return isGranted == PackageManager.PERMISSION_GRANTED
     }
@@ -119,6 +122,16 @@ object SystemInfo {
         }
     }
 
+    /**
+     * 获取屏幕高度
+     */
+    fun getScreenHeight(): Int {
+        val mWindowManager = App.getApp().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val metrics = DisplayMetrics()
+        mWindowManager.defaultDisplay.getMetrics(metrics)
+        return metrics.heightPixels
+    }
+
     //android M 上动态改变状态栏文字颜色
     fun setAndroidNativeLightStatusBar(activity: Activity, dark: Boolean) {
         try {
@@ -126,10 +139,10 @@ object SystemInfo {
                 val decor = activity.window.decorView
                 if (dark) {
                     decor.systemUiVisibility =
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 } else {
                     decor.systemUiVisibility =
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 }
             }
         } catch (ignore: Exception) {
@@ -156,16 +169,16 @@ object SystemInfo {
         var androidId: String? = ""
         try {
             androidId =
-                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
         } catch (e: java.lang.Exception) {
         }
         if (TextUtils.isEmpty(androidId)) {
             try {
                 androidId =
-                        Settings.System.getString(
-                                context.contentResolver,
-                                Settings.System.ANDROID_ID
-                        )
+                    Settings.System.getString(
+                        context.contentResolver,
+                        Settings.System.ANDROID_ID
+                    )
             } catch (ignore: java.lang.Exception) {
             }
         }
@@ -192,7 +205,7 @@ object SystemInfo {
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
             val telephonyManager =
-                    App.getApp()!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                App.getApp()!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             if (telephonyManager != null) {
                 1
             } else {
@@ -206,7 +219,7 @@ object SystemInfo {
      */
     fun hasSimCard(): Int {
         val telMgr =
-                App.getApp()!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            App.getApp()!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return if (telMgr != null) {
             val simState = telMgr.simState
             Log.i("SystemInfo", "simStatus:$simState")
@@ -225,7 +238,7 @@ object SystemInfo {
         var number = ""
         try {
             val manager =
-                    appContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                appContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             number = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
                 manager.imei
             } else {
@@ -246,15 +259,15 @@ object SystemInfo {
         var androidId: String = getAndroidIdNotNull(context)!!
         if (TextUtils.isEmpty(androidId)) {
             androidId = Settings.System.getString(
-                    context.contentResolver,
-                    App.getApp()!!.packageName + ".random_id"
+                context.contentResolver,
+                App.getApp()!!.packageName + ".random_id"
             )
             if (TextUtils.isEmpty(androidId)) {
                 androidId = BigInteger(130, SecureRandom()).toString(32)
                 Settings.System.putString(
-                        context.contentResolver,
-                        App.getApp()!!.packageName + ".random_id",
-                        androidId
+                    context.contentResolver,
+                    App.getApp()!!.packageName + ".random_id",
+                    androidId
                 )
             }
         }
@@ -267,8 +280,8 @@ object SystemInfo {
             Build.VERSION.SECURITY_PATCH
         } else {
             getSystemProperty(
-                    "ro.build.version.security_patch",
-                    "unknown"
+                "ro.build.version.security_patch",
+                "unknown"
             )
         }
     }
@@ -277,7 +290,7 @@ object SystemInfo {
         return try {
             val cls = Class.forName("android.os.SystemProperties")
             cls.getMethod("get", *arrayOf<Class<*>>(String::class.java, String::class.java))
-                    .invoke(cls, *arrayOf<Any>(str, str2)) as String
+                .invoke(cls, *arrayOf<Any>(str, str2)) as String
         } catch (e: java.lang.Exception) {
             str2
         }
@@ -295,7 +308,7 @@ object SystemInfo {
     fun setupWindow(activity: Activity?, flag: Int) {
         if (activity != null && activity.window != null) {
             activity.window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or flag
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or flag
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 activity.window.statusBarColor = Color.TRANSPARENT
             }
