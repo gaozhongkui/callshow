@@ -25,7 +25,7 @@ class HomeViewModel : BaseViewModel() {
 
         //推荐
         val recommend = HomeTabInfo(
-            "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn",
+            "PLIbLfYSA8ACNYCOaDWmj6EA1F1uS-pyVL",
             resources.getString(R.string.tab_recommend)
         )
         dataList.add(recommend)
@@ -46,28 +46,28 @@ class HomeViewModel : BaseViewModel() {
 
         //帅哥
         val handsome_guy = HomeTabInfo(
-            "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn",
+            "PLgjZiTE-Q9SJZRivhaB6HQLeLmYMSgZEH",
             resources.getString(R.string.tab_handsome_guy)
         )
         dataList.add(handsome_guy)
 
         //卡通
         val cartoons = HomeTabInfo(
-            "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn",
+            "PLgjZiTE-Q9SI71HKolVdpMdjo7F6oXAsL",
             resources.getString(R.string.tab_cartoons)
         )
         dataList.add(cartoons)
 
         //风景
         val landscape = HomeTabInfo(
-            "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn",
+            "PLgjZiTE-Q9SI7D44Bfp1Kv0gatv7nQZuy",
             resources.getString(R.string.tab_landscape)
         )
         dataList.add(landscape)
 
         //搞笑
         val funny = HomeTabInfo(
-            "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn",
+            "PLgjZiTE-Q9SLjtSl3u0ApQ1Lk6a2reDbu",
             resources.getString(R.string.tab_funny)
         )
         dataList.add(funny)

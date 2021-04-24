@@ -56,9 +56,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
             mVideoItemInfo = getParcelable<VideoItemInfo>(EXTRA_VIDEO_INFO)
             mVideoItemInfo?.apply {
                 binding.loadingView.visibility = View.VISIBLE
-                binding.ivPlaceholder.visibility = View.VISIBLE
-                Glide.with(this@VideoFragment).load(previewPng)
-                    .placeholder(R.drawable.bg_video_placeholder).into(binding.ivPlaceholder)
+                showPlaceholderView()
                 binding.tvTitle.text = title
                 //判断如果视频的地址为空，则进行加载
                 if (TextUtils.isEmpty(videoUrl)) {
@@ -94,8 +92,20 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         }
     }
 
+    /**
+     * 显示展位图布局
+     */
+    private fun showPlaceholderView() {
+        binding.ivPlaceholder.visibility = View.VISIBLE
+        mVideoItemInfo?.apply {
+            Glide.with(this@VideoFragment).load(previewPng)
+                .placeholder(R.drawable.bg_video_placeholder).into(binding.ivPlaceholder)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
+        showPlaceholderView()
         initializePlayer()
         binding.playerView.onResume()
     }
