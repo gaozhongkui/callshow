@@ -54,7 +54,9 @@ class VideoListAdapter(cxt: Context) : RecyclerView.Adapter<VideoListAdapter.Nor
 
 
         fun onBindDataToView(info: VideoItemInfo) {
-            Glide.with(binding.root).load(info.previewPng).into(binding.ivImg)
+            Glide.with(binding.root).load(info.previewPng)
+                .placeholder(R.drawable.bg_video_placeholder).into(binding.ivImg)
+            binding.tvTitle.text = info.title
             //计算宽高比
             val dimensionRatio = info.width.toFloat() / info.high.toFloat()
             //设置布局的旷告比
