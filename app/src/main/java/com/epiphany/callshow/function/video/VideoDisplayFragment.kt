@@ -2,6 +2,7 @@ package com.epiphany.callshow.function.video
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import androidx.viewpager2.widget.ViewPager2
 import com.epiphany.callshow.R
 import com.epiphany.callshow.common.base.BaseFragment
@@ -34,10 +35,14 @@ class VideoDisplayFragment : BaseFragment<VideoDisplayViewModel, FragmentVideoDi
     }
 
     private fun initDataObserver() {
+        //展示加载Loading布局
+        binding.loadingView.visibility = View.VISIBLE
         viewModel.getVideoDataList().observe(this, {
             if (!SystemInfo.isValidActivity(activity)) {
                 return@observe
             }
+            //隐藏Loading布局
+            binding.loadingView.visibility = View.GONE
             val isRefresh = !viewModel.isLoadDataMoreState()
             if (binding.smartRefresh.isRefreshing) {
                 binding.smartRefresh.finishRefresh()
@@ -74,6 +79,17 @@ class VideoDisplayFragment : BaseFragment<VideoDisplayViewModel, FragmentVideoDi
                 binding.smartRefresh.setEnableRefresh(position == 0)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        //判断数据为空时， 则进行数据获取
+        mVideoDisplayAdapter?.apply {
+            if (itemCount <= 0) {
+                viewModel.loadVideoData()
+            }
+        }
     }
 
     companion object {

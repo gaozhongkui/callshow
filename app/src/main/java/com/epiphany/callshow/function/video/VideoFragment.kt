@@ -6,8 +6,8 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Pair
 import android.view.View
+import com.bumptech.glide.Glide
 import com.epiphany.callshow.R
-import com.epiphany.callshow.api.VideoHelper
 import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.base.BaseViewModel
@@ -55,6 +55,11 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         arguments?.apply {
             mVideoItemInfo = getParcelable<VideoItemInfo>(EXTRA_VIDEO_INFO)
             mVideoItemInfo?.apply {
+                binding.loadingView.visibility = View.VISIBLE
+                binding.ivPlaceholder.visibility = View.VISIBLE
+                Glide.with(this@VideoFragment).load(previewPng)
+                    .placeholder(R.drawable.bg_video_placeholder).into(binding.ivPlaceholder)
+                binding.tvTitle.text = title
                 //判断如果视频的地址为空，则进行加载
                 if (TextUtils.isEmpty(videoUrl)) {
                     isLoadingVideoRealPath.set(true)
@@ -147,9 +152,12 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
             }
             Player.STATE_BUFFERING -> {
                 Log.d(TAG, "onPlayerStateChanged() called with: 视频缓存中")
+                binding.loadingView.visibility = View.VISIBLE
             }
             Player.STATE_READY -> {
                 Log.d(TAG, "onPlayerStateChanged() called with: 视频准备完成，正要播放")
+                binding.ivPlaceholder.visibility = View.GONE
+                binding.loadingView.visibility = View.GONE
             }
             Player.STATE_ENDED -> {
                 Log.d(TAG, "onPlayerStateChanged() called with: 视频结束")

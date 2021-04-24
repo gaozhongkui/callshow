@@ -29,4 +29,15 @@
         </attr>
     </declare-styleable>
 
+
+    <declare-styleable name="VideoLoadingView">
+        <!--进度条初始颜色-->
+        <attr name="progressColor" format="string" />
+        <!--进度条最小宽度即初始宽度-->
+        <attr name="minProgressWidth" format="dimension" />
+        <!--view最小宽度-->
+        <attr name="minWidth" format="dimension" />
+        <!--view最小高度-->
+        <attr name="minHeight" format="dimension" />
+    </declare-styleable>
 </resources>
