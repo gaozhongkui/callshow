@@ -1,11 +1,15 @@
 package com.epiphany.callshow.api
 
+import android.os.SystemClock
 import android.util.Log
+import com.epiphany.callshow.App
 import com.epiphany.callshow.BuildConfig
+import com.epiphany.callshow.common.utils.SystemInfo
 import com.google.api.client.googleapis.json.GoogleJsonResponseException
 import com.google.api.services.youtube.YouTube
 import com.google.api.services.youtube.model.PlaylistItemListResponse
 import java.io.IOException
+import java.lang.Exception
 
 /**
  * 此类用于承载所有的网络请求的入口
@@ -39,14 +43,25 @@ object ApiClient {
             search.pageToken = nextPageToken
             val searchResponse = try {
                 search.execute()
-            } catch (e: GoogleJsonResponseException) {
-                //youtube api 配额用尽，尝试替换api key
-                if (403 == e.details.code) {
-                    //切换下一个有用的API Key
-                    APIKeyHelper.switchNextEnableAPIKey()
-                    //重新调用
+            } catch (e: Exception) {
+                //判断是否为账号错误的问题
+                if (e is GoogleJsonResponseException) {
+                    //youtube api 配额用尽，尝试替换api key
+                    if (403 == e.details.code) {
+                        //切换下一个有用的API Key
+                        APIKeyHelper.switchNextEnableAPIKey()
+                        //重新调用
+                        return getVideos(playListId, nextPageToken)
+                    }
+                } else {
+                    if (!SystemInfo.checkConnectivity(App.getApp())) {
+                        return null
+                    }
+                    //延迟一下，继续请求
+                    SystemClock.sleep(1000)
                     return getVideos(playListId, nextPageToken)
                 }
+
                 null
             }
             Log.d(TAG, "getVideos() called $searchResponse")
