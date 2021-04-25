@@ -15,7 +15,7 @@ import com.epiphany.callshow.model.VideoItemInfo
 class VideoListAdapter(cxt: Context) : RecyclerView.Adapter<VideoListAdapter.NormalViewHolder>() {
     private val mDataList = mutableListOf<VideoItemInfo>()
     private val mLayoutInflater = LayoutInflater.from(cxt)
-
+    private var mListener: IVideoListListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NormalViewHolder {
         val binding = DataBindingUtil.inflate<ItemHomeVideoViewBinding>(
             mLayoutInflater,
@@ -34,6 +34,13 @@ class VideoListAdapter(cxt: Context) : RecyclerView.Adapter<VideoListAdapter.Nor
     override fun getItemCount(): Int = mDataList.size
 
     /**
+     * 获取所有数据集合
+     */
+    fun getDataList(): ArrayList<VideoItemInfo> {
+        return ArrayList(mDataList)
+    }
+
+    /**
      * 设置数据
      */
     @MainThread
@@ -45,13 +52,21 @@ class VideoListAdapter(cxt: Context) : RecyclerView.Adapter<VideoListAdapter.Nor
         notifyDataSetChanged()
     }
 
+    fun setVideoListListener(listener: IVideoListListener) {
+        mListener = listener
+    }
+
     fun releaseData() {
         mDataList.clear()
     }
 
     inner class NormalViewHolder(private val binding: ItemHomeVideoViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
+        init {
+            binding.root.setOnClickListener {
+                mListener?.onItemClick(adapterPosition)
+            }
+        }
 
         fun onBindDataToView(info: VideoItemInfo) {
             Glide.with(binding.root).load(info.previewPng)
@@ -64,6 +79,10 @@ class VideoListAdapter(cxt: Context) : RecyclerView.Adapter<VideoListAdapter.Nor
             layoutParams.dimensionRatio = "1:$dimensionRatio"
             binding.ivImg.layoutParams = layoutParams
         }
+    }
+
+    interface IVideoListListener {
+        fun onItemClick(position: Int)
     }
 }
 

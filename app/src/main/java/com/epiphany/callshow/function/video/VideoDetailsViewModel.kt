@@ -1,26 +1,26 @@
-package com.epiphany.callshow.function.home
+package com.epiphany.callshow.function.video
 
-import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.epiphany.callshow.api.ApiClient
 import com.epiphany.callshow.api.VideoHelper
 import com.epiphany.callshow.common.base.BaseViewModel
+import com.epiphany.callshow.constant.DEFAULT_PLAY_LIST_ID
 import com.epiphany.callshow.model.VideoItemInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class VideoListViewModel : BaseViewModel() {
+class VideoDetailsViewModel : BaseViewModel() {
     //下一页的Token
     private var mNextPageToken: String? = null
 
+    private var mPlayListId: String = DEFAULT_PLAY_LIST_ID
+
     //加载更多数据的状态
     private var isLoadDataMoreState = false
-
-    private var mPlayListId: String? = null
 
     //视频数据集合
     private val mVideoDataList = MutableLiveData<List<VideoItemInfo>>()
@@ -28,6 +28,7 @@ class VideoListViewModel : BaseViewModel() {
     fun getVideoDataList(): LiveData<List<VideoItemInfo>> {
         return mVideoDataList
     }
+
 
     /**
      * 加载更多数据的状态
@@ -43,19 +44,16 @@ class VideoListViewModel : BaseViewModel() {
         mPlayListId = playListId
     }
 
-    fun getNextPageToken(): String? {
-        return mNextPageToken
+    fun setNextPageToken(nextPageToken: String?) {
+        mNextPageToken = nextPageToken
     }
 
     /**
-     * 加载视频数据
+     * 刷新视频数据
      */
-    fun loadVideoData() {
+    fun onRefreshVideoData() {
         GlobalScope.launch {
-            if (TextUtils.isEmpty(mPlayListId)) {
-                return@launch
-            }
-            val response = ApiClient.getVideos(mPlayListId!!)
+            val response = ApiClient.getVideos(mPlayListId)
             if (response == null) {
                 Log.d(TAG, "loadVideoData() called")
                 return@launch
@@ -72,22 +70,13 @@ class VideoListViewModel : BaseViewModel() {
         }
     }
 
-    /**
-     * 刷新视频数据
-     */
-    fun onRefreshVideoData() {
-        loadVideoData()
-    }
 
     /**
      * 加载更多数据
      */
     fun onLoadMoreVideoData() {
         GlobalScope.launch {
-            if (TextUtils.isEmpty(mPlayListId)) {
-                return@launch
-            }
-            val response = ApiClient.getVideos(mPlayListId!!, mNextPageToken)
+            val response = ApiClient.getVideos(mPlayListId, mNextPageToken)
             if (response == null) {
                 Log.d(TAG, "loadVideoData() called")
                 return@launch
@@ -105,6 +94,6 @@ class VideoListViewModel : BaseViewModel() {
     }
 
     companion object {
-        private const val TAG = "VideoListViewModel"
+        private const val TAG = "VideoDetailsViewModel"
     }
 }

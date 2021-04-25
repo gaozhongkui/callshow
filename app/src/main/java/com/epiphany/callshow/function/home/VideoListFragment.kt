@@ -9,6 +9,7 @@ import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.constant.DEFAULT_PLAY_LIST_ID
 import com.epiphany.callshow.databinding.FragmentVideoListLayoutBinding
+import com.epiphany.callshow.function.video.VideoDetailsActivity
 
 /**
  * 视频列表页面
@@ -85,6 +86,24 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
             }
             viewModel.onLoadMoreVideoData()
         }
+
+        mVideoAdapter?.setVideoListListener(object : VideoListAdapter.IVideoListListener {
+            override fun onItemClick(position: Int) {
+                if (!SystemInfo.isValidActivity(activity)) {
+                    return
+                }
+                mVideoAdapter?.apply {
+                    VideoDetailsActivity.launchActivity(
+                        activity!!,
+                        position,
+                        getDataList(),
+                        mPlayListId!!,
+                        viewModel.getNextPageToken()
+                    )
+                }
+            }
+
+        })
     }
 
     override fun onResume() {

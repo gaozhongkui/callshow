@@ -99,6 +99,8 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     private fun preloadingNextVideo() {
         if (parentFragment is VideoDisplayFragment) {
             (parentFragment as VideoDisplayFragment).preloadingNextVideo()
+        } else if (activity is VideoDetailsActivity) {
+            (activity as VideoDetailsActivity).preloadingNextVideo()
         }
     }
 
