@@ -61,7 +61,6 @@ object VideoPlayHelper {
         return CacheDataSource.Factory()
             .setCache(cache)
             .setUpstreamDataSourceFactory(upstreamFactory)
-            .setCacheWriteDataSinkFactory(null)
             .setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
     }
 
@@ -72,7 +71,7 @@ object VideoPlayHelper {
         val downloadContentDirectory =
             File(context.filesDir, DOWNLOAD_CONTENT_DIRECTORY)
         return SimpleCache(
-            downloadContentDirectory, LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024),
+            downloadContentDirectory, LeastRecentlyUsedCacheEvictor(1024 * 1024 * 1024),
             ExoDatabaseProvider(context)
         )
     }
