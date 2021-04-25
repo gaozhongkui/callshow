@@ -1,5 +1,6 @@
 package com.epiphany.callshow.function.video
 
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -8,6 +9,9 @@ import android.util.Pair
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.epiphany.callshow.R
 import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
@@ -25,6 +29,7 @@ import com.google.android.exoplayer2.source.MergingMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout
 import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.upstream.HttpDataSource
 import com.google.android.exoplayer2.util.ErrorMessageProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -102,7 +107,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         mVideoItemInfo?.apply {
             Glide.with(this@VideoFragment).load(previewPng)
                 .placeholder(R.drawable.bg_video_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(binding.ivPlaceholder)
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(binding.ivPlaceholder)
         }
     }
 
@@ -115,6 +120,8 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
 
     override fun onPause() {
         super.onPause()
+        //恢复默认状态
+        binding.ivPlaceholder.visibility = View.VISIBLE
         mPlayer?.pause()
         releasePlayer()
     }
@@ -187,9 +194,17 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 binding.loadingView.visibility = View.VISIBLE
             }
             Player.STATE_READY -> {
-                Log.d(TAG, "onPlayerStateChanged() called with: 视频准备完成，正要播放")
+                Log.d(
+                    TAG,
+                    "onPlayerStateChanged() called with: 视频准备完成，正要播放 playWhenReady:$playWhenReady"
+                )
+
+                Log.d(
+                    TAG,
+                    "videoID = ${mVideoItemInfo?.videoId}, videoUrl = ${mVideoItemInfo?.videoUrl}"
+                )
                 //判断当前是可见状态时，则设置为不可见
-                if (isResumed) {
+                if (isResumed && playWhenReady) {
                     binding.ivPlaceholder.visibility = View.GONE
                     binding.loadingView.visibility = View.GONE
                 }
@@ -219,6 +234,14 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     private inner class PlayerErrorMessageProvider : ErrorMessageProvider<ExoPlaybackException> {
         override fun getErrorMessage(throwable: ExoPlaybackException): Pair<Int, String> {
             Log.w(TAG, "getErrorMessage: ", throwable)
+            throwable.cause?.apply {
+                if (this is HttpDataSource.InvalidResponseCodeException) {
+                    //视频地址不存在
+                    if (responseCode == 403) {
+                        // TODO: 2021/4/25 编写视频地址不存在的逻辑
+                    }
+                }
+            }
             return Pair.create(0, throwable.message)
         }
 
