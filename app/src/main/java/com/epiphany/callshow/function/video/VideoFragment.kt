@@ -166,8 +166,11 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
             }
             Player.STATE_READY -> {
                 Log.d(TAG, "onPlayerStateChanged() called with: 视频准备完成，正要播放")
-                binding.ivPlaceholder.visibility = View.GONE
-                binding.loadingView.visibility = View.GONE
+                //判断当前是可见状态时，则设置为不可见
+                if (isResumed) {
+                    binding.ivPlaceholder.visibility = View.GONE
+                    binding.loadingView.visibility = View.GONE
+                }
             }
             Player.STATE_ENDED -> {
                 Log.d(TAG, "onPlayerStateChanged() called with: 视频结束")

@@ -9,10 +9,7 @@ import com.google.android.exoplayer2.ext.cronet.CronetEngineWrapper
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.upstream.HttpDataSource
-import com.google.android.exoplayer2.upstream.cache.Cache
-import com.google.android.exoplayer2.upstream.cache.CacheDataSource
-import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor
-import com.google.android.exoplayer2.upstream.cache.SimpleCache
+import com.google.android.exoplayer2.upstream.cache.*
 import java.io.File
 import java.util.concurrent.Executors
 
@@ -75,7 +72,7 @@ object VideoPlayHelper {
         val downloadContentDirectory =
             File(context.filesDir, DOWNLOAD_CONTENT_DIRECTORY)
         return SimpleCache(
-            downloadContentDirectory, NoOpCacheEvictor(),
+            downloadContentDirectory, LeastRecentlyUsedCacheEvictor(100 * 1024 * 1024),
             ExoDatabaseProvider(context)
         )
     }
