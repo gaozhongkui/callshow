@@ -126,10 +126,14 @@ object SystemInfo {
      * 获取屏幕高度
      */
     fun getScreenHeight(): Int {
-        val mWindowManager = App.getApp().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val metrics = DisplayMetrics()
-        mWindowManager.defaultDisplay.getMetrics(metrics)
-        return metrics.heightPixels
+        return App.getApp().resources.displayMetrics.heightPixels
+    }
+
+    /**
+     * 获取屏幕的宽度
+     */
+    fun getScreenWidth(): Int {
+        return App.getApp().resources.displayMetrics.widthPixels
     }
 
     //android M 上动态改变状态栏文字颜色

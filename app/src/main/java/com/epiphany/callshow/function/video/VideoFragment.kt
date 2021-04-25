@@ -7,10 +7,12 @@ import android.util.Log
 import android.util.Pair
 import android.view.View
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.epiphany.callshow.R
 import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.base.BaseViewModel
+import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentVideoLayoutBinding
 import com.epiphany.callshow.model.VideoItemInfo
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -99,7 +101,8 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         binding.ivPlaceholder.visibility = View.VISIBLE
         mVideoItemInfo?.apply {
             Glide.with(this@VideoFragment).load(previewPng)
-                .placeholder(R.drawable.bg_video_placeholder).into(binding.ivPlaceholder)
+                .placeholder(R.drawable.bg_video_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(binding.ivPlaceholder)
         }
     }
 
@@ -149,8 +152,27 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 setMediaSource(loopingMediaSource)
                 prepare()
                 binding.playerView.player = this
+                setVideoScaleType()
             }
         }
+    }
+
+    /**
+     * 设置视频的缩放模式
+     */
+    private fun setVideoScaleType() {
+        val screenHeight = SystemInfo.getScreenHeight()
+        val screenWidth = SystemInfo.getScreenWidth()
+
+        mVideoItemInfo?.apply {
+            //判断如果宽度小于屏幕，则直接铺满全屏
+            if (width < screenWidth || high < screenHeight) {
+                binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+            } else {
+                binding.playerView.resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT
+            }
+        }
+
     }
 
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
