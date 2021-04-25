@@ -81,6 +81,16 @@ class VideoDisplayFragment : BaseFragment<VideoDisplayViewModel, FragmentVideoDi
         })
     }
 
+    /**
+     * 预下载下一条视频
+     */
+    fun preloadingNextVideo() {
+        val nextItem = binding.viewPager.currentItem + 1
+        mVideoDisplayAdapter?.getItemData(nextItem)?.apply {
+            VideoPreloadingManager.getInstance().preloadingVideo(this)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -90,6 +100,11 @@ class VideoDisplayFragment : BaseFragment<VideoDisplayViewModel, FragmentVideoDi
                 viewModel.loadVideoData()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mVideoDisplayAdapter?.releaseData()
     }
 
     companion object {

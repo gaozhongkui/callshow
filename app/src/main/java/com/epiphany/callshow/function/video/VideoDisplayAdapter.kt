@@ -24,6 +24,16 @@ class VideoDisplayAdapter(fragment: Fragment) :
         notifyDataSetChanged()
     }
 
+    /**
+     * 获取视频Info数据
+     */
+    fun getItemData(position: Int): VideoItemInfo? {
+        if (position >= itemCount) {
+            return null
+        }
+        return mDataList[position]
+    }
+
     fun releaseData() {
         mDataList.clear()
     }

@@ -47,7 +47,6 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
 
     //播放器实例
     private var mPlayer: SimpleExoPlayer? = null
-    private var mDrmSessionManager: DrmSessionManager? = null
 
     //是否加载真实的路径
     private var isLoadingVideoRealPath = AtomicBoolean(false)
@@ -100,6 +99,15 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     }
 
     /**
+     * 预下载下一条视频
+     */
+    private fun preloadingNextVideo() {
+        if (parentFragment is VideoDisplayFragment) {
+            (parentFragment as VideoDisplayFragment).preloadingNextVideo()
+        }
+    }
+
+    /**
      * 显示展位图布局
      */
     private fun showPlaceholderView() {
@@ -116,6 +124,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         showPlaceholderView()
         initializePlayer()
         binding.playerView.onResume()
+        cancelPreloading()
     }
 
     override fun onPause() {
@@ -124,6 +133,16 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         binding.ivPlaceholder.visibility = View.VISIBLE
         mPlayer?.pause()
         releasePlayer()
+        cancelPreloading()
+    }
+
+    /**
+     * 取消预加载
+     */
+    private fun cancelPreloading() {
+        mVideoItemInfo?.apply {
+            VideoPreloadingManager.getInstance().cancelPreloading(this)
+        }
     }
 
     /**
@@ -142,14 +161,11 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
             binding.playerView.setErrorMessageProvider(PlayerErrorMessageProvider())
             val videoUri = Uri.parse(mVideoItemInfo?.videoUrl)
             val audioUri = Uri.parse(mVideoItemInfo?.audioUrl)
-            mDrmSessionManager = DrmSessionManager.DRM_UNSUPPORTED
             val dataSourceFactory: DataSource.Factory =
                 VideoPlayHelper.getDataSourceFactory(activity!!)
             val videoMediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                .setDrmSessionManager(mDrmSessionManager)
                 .createMediaSource(MediaItem.fromUri(videoUri))
             val audioMediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                .setDrmSessionManager(mDrmSessionManager)
                 .createMediaSource(MediaItem.fromUri(audioUri))
             val mergingMediaSource = MergingMediaSource(videoMediaSource, audioMediaSource)
             val loopingMediaSource = LoopingMediaSource(mergingMediaSource)
@@ -205,6 +221,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 )
                 //判断当前是可见状态时，则设置为不可见
                 if (isResumed && playWhenReady) {
+                    preloadingNextVideo()
                     binding.ivPlaceholder.visibility = View.GONE
                     binding.loadingView.visibility = View.GONE
                 }
@@ -223,8 +240,6 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
      * 回收播放器的资源
      */
     private fun releasePlayer() {
-        mDrmSessionManager?.release()
-        mDrmSessionManager = null
         mPlayer?.removeListener(this)
         mPlayer?.clearVideoSurface()
         mPlayer?.release()
