@@ -3,6 +3,7 @@ package com.epiphany.callshow.api
 import android.util.Log
 import com.epiphany.callshow.BuildConfig
 import com.epiphany.callshow.common.utils.SystemInfo
+import com.epiphany.callshow.database.VideoRoomManager
 import com.epiphany.callshow.model.VideoItemInfo
 import com.epiphany.callshow.model.VideoRealPathInfo
 import com.epiphany.jextractor.YoutubeDownloader
@@ -39,7 +40,14 @@ object VideoHelper {
     /**
      * 获取视频的真实地址
      */
-    fun getVideoRealPathStr(videoId: String): VideoRealPathInfo {
+    fun getVideoRealPathStr(videoId: String, forciblyQuery: Boolean = false): VideoRealPathInfo {
+        //判断非强制获取时，则优先从数据库中获取
+        if (!forciblyQuery) {
+            val cacheVideoRealPathInfo = VideoRoomManager.getSyncVideoRealPathInfo(videoId)
+            cacheVideoRealPathInfo?.let {
+                return it
+            }
+        }
         val videoInfo = getVideoRealPath(videoId)
         var audioPath = videoInfo.audioFormats()[0].url()
         //遍历音频文件类型
@@ -97,8 +105,10 @@ object VideoHelper {
             )
         }
         val videoUrl = deskVideoFormat!!.url()
-
-        return VideoRealPathInfo(videoUrl, audioPath)
+        val videoRealPathInfo = VideoRealPathInfo(videoId, videoUrl, audioPath)
+        //插入到数据库中
+        VideoRoomManager.insertVideoRealPath(videoRealPathInfo)
+        return videoRealPathInfo
     }
 
     /**
