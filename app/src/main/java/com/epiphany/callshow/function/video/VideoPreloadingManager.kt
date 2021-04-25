@@ -21,6 +21,12 @@ class VideoPreloadingManager {
     private val mHandlerThread = HandlerThread("video_preloading")
     private var mHandler: Handler
 
+    //当前加载视频信息
+    private var mCurrentPreloadVideoInfo: VideoItemInfo? = null
+
+    //当前正在缓存的对象
+    private var mCurrentCacheWriter: CacheWriter? = null
+
     init {
         mHandlerThread.start()
         mHandler = Handler(mHandlerThread.looper) { msg ->
@@ -51,6 +57,18 @@ class VideoPreloadingManager {
      */
     fun cancelPreloading(videoItemInfo: VideoItemInfo) {
         mPreloadedVideoList.remove(videoItemInfo)
+
+        mCurrentPreloadVideoInfo?.apply {
+            //判断如果当前正在执行的缓存正式取消的对象，则立马取消缓存
+            if (TextUtils.equals(videoId, videoItemInfo.videoId)) {
+                try {
+                    mCurrentCacheWriter?.cancel()
+                } catch (e: Throwable) {
+                }
+                mCurrentCacheWriter = null
+                mCurrentPreloadVideoInfo = null
+            }
+        }
     }
 
     /**
@@ -76,11 +94,12 @@ class VideoPreloadingManager {
      * 执行缓存操作
      */
     private fun doCacheAction(info: VideoItemInfo) {
+        mCurrentPreloadVideoInfo = info
         val videoUri = Uri.parse(info.videoUrl)
         val dataSource: CacheDataSource =
             VideoPlayHelper.getDataSourceFactory(App.getApp()).createDataSource() as CacheDataSource
         val dataSpec = DataSpec(videoUri, 0, 8 * 1024 * 1024)//8M
-        val cacheWriter = CacheWriter(
+        mCurrentCacheWriter = CacheWriter(
             dataSource,
             dataSpec,
             true,
@@ -91,7 +110,12 @@ class VideoPreloadingManager {
                 "onProgress() called with: requestLength = $requestLength, bytesCached = $bytesCached, newBytesCached = $newBytesCached"
             )
         }
-        cacheWriter.cache()
+        try {
+            mCurrentCacheWriter?.cache()
+        } catch (e: Throwable) {
+
+        }
+
     }
 
     /**
