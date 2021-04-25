@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Pair
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.epiphany.callshow.R
@@ -54,6 +55,8 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
 
     override fun initView() {
         arguments?.apply {
+            val isVideoDetails = getBoolean(EXTRA_IS_VIDEO_DETAILS, false)
+            setBottomLayoutState(isVideoDetails)
             mVideoItemInfo = getParcelable<VideoItemInfo>(EXTRA_VIDEO_INFO)
             mVideoItemInfo?.apply {
                 binding.loadingView.visibility = View.VISIBLE
@@ -67,6 +70,21 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                     isLoadingVideoRealPath.set(false)
                 }
             }
+        }
+    }
+
+    private fun setBottomLayoutState(isVideoDetails: Boolean) {
+        if (isVideoDetails) {
+            //loading底部边距
+            val loadingLayoutParams =
+                binding.loadingView.layoutParams as ConstraintLayout.LayoutParams
+            loadingLayoutParams.bottomMargin = 0
+            binding.loadingView.layoutParams = loadingLayoutParams
+
+            //标题底部边距
+            val titleLayoutParams = binding.tvTitle.layoutParams as ConstraintLayout.LayoutParams
+            titleLayoutParams.bottomMargin = resources.getDimension(R.dimen.dp_16).toInt()
+            binding.tvTitle.layoutParams = titleLayoutParams
         }
     }
 
@@ -112,7 +130,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         mVideoItemInfo?.apply {
             Glide.with(this@VideoFragment).load(previewPng)
                 .placeholder(R.drawable.bg_video_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(binding.ivPlaceholder)
+                .diskCacheStrategy(DiskCacheStrategy.DATA).into(binding.ivPlaceholder)
         }
     }
 
@@ -262,10 +280,12 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     companion object {
         private const val TAG = "video_tag"
         private const val EXTRA_VIDEO_INFO = "extra_video_info"
-        fun newInstance(videoInfo: VideoItemInfo): VideoFragment {
+        private const val EXTRA_IS_VIDEO_DETAILS = "extra_is_video_details"
+        fun newInstance(videoInfo: VideoItemInfo, isVideoDetails: Boolean = false): VideoFragment {
             val fragment = VideoFragment()
             val bundle = Bundle()
             bundle.putParcelable(EXTRA_VIDEO_INFO, videoInfo)
+            bundle.putBoolean(EXTRA_IS_VIDEO_DETAILS, isVideoDetails)
             fragment.arguments = bundle
             return fragment
         }

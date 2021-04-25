@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.epiphany.callshow.R
 import com.epiphany.callshow.databinding.ItemHomeVideoViewBinding
 import com.epiphany.callshow.model.VideoItemInfo
@@ -70,7 +71,8 @@ class VideoListAdapter(cxt: Context) : RecyclerView.Adapter<VideoListAdapter.Nor
 
         fun onBindDataToView(info: VideoItemInfo) {
             Glide.with(binding.root).load(info.previewPng)
-                .placeholder(R.drawable.bg_video_placeholder).into(binding.ivImg)
+                .placeholder(R.drawable.bg_video_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.DATA).into(binding.ivImg)
             binding.tvTitle.text = info.title
             //计算宽高比
             val dimensionRatio = info.width.toFloat() / info.high.toFloat()

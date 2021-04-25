@@ -37,7 +37,16 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="@drawable/bg_video_list_bottom"
+            android:background="@drawable/bg_video_top"
+            app:layout_constraintDimensionRatio="1:0.42"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_video_bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:0.88"
             app:layout_constraintEnd_toEndOf="parent"

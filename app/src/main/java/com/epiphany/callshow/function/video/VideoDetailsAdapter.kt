@@ -11,7 +11,7 @@ class VideoDetailsAdapter(fragment: FragmentActivity) :
     private val mDataList = mutableListOf<VideoItemInfo>()
 
     override fun createFragment(position: Int): Fragment {
-        return VideoFragment.newInstance(mDataList[position])
+        return VideoFragment.newInstance(mDataList[position], true)
     }
 
     override fun getItemCount(): Int = mDataList.size
