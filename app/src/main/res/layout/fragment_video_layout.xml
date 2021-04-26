@@ -89,9 +89,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_12"
-            android:layout_marginBottom="@dimen/dp_34"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@id/bottom_view"
+            app:layout_constraintBottom_toBottomOf="@id/tv_setting_call_show"
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="UseCompoundDrawables">
 
@@ -126,7 +125,7 @@
             android:layout_marginBottom="@dimen/dp_14"
             android:ellipsize="end"
             android:gravity="start"
-            android:maxLines="3"
+            android:maxLines="4"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold"
@@ -161,9 +160,9 @@
             android:id="@+id/loading_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp_48"
+            android:layout_marginBottom="@dimen/dp_1"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/bottom_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:minHeight="@dimen/dp_3" />

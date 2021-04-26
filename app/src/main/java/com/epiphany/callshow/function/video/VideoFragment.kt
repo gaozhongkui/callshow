@@ -75,16 +75,9 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
 
     private fun setBottomLayoutState(isVideoDetails: Boolean) {
         if (isVideoDetails) {
-            //loading底部边距
-            val loadingLayoutParams =
-                binding.loadingView.layoutParams as ConstraintLayout.LayoutParams
-            loadingLayoutParams.bottomMargin = 0
-            binding.loadingView.layoutParams = loadingLayoutParams
-
-            //标题底部边距
-            val titleLayoutParams = binding.tvTitle.layoutParams as ConstraintLayout.LayoutParams
-            titleLayoutParams.bottomMargin = resources.getDimension(R.dimen.dp_16).toInt()
-            binding.tvTitle.layoutParams = titleLayoutParams
+            val layoutParams = binding.bottomView.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.bottomMargin = 0
+            binding.bottomView.layoutParams = layoutParams
         }
     }
 
