@@ -12,4 +12,8 @@
     <string name="tab_cartoons">Cartoons</string>
     <string name="tab_landscape">Landscape</string>
     <string name="tab_funny">Funny</string>
+
+    <string name="setting_call_show">Set as call show</string>
+    <string name="set_up_wallpaper">Set wallpaper</string>
+    <string name="preview">Preview</string>
 </resources>
