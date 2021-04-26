@@ -61,9 +61,7 @@ class VideoDetailsViewModel : BaseViewModel() {
             //记录下一屏幕的数据
             mNextPageToken = response.nextPageToken
             isLoadDataMoreState = false
-            val items = response.items
-            //转换数据格式
-            val videos = VideoHelper.convertPlaylistItemToVideoInfo(items)
+            val videos = response.items
             withContext(Dispatchers.Main) {
                 mVideoDataList.value = videos
             }
@@ -84,9 +82,7 @@ class VideoDetailsViewModel : BaseViewModel() {
             //记录下一屏幕的数据
             mNextPageToken = response.nextPageToken
             isLoadDataMoreState = true
-            val items = response.items
-            //转换数据格式
-            val videos = VideoHelper.convertPlaylistItemToVideoInfo(items)
+            val videos = response.items
             withContext(Dispatchers.Main) {
                 mVideoDataList.value = videos
             }

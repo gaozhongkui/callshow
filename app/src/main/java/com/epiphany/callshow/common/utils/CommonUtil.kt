@@ -39,8 +39,8 @@ object CommonUtil {
     fun getAppLabel(context: Context, packageName: String?): CharSequence? {
         val manager = context.packageManager
         val applicationInfo = manager.getApplicationInfo(
-                packageName!!,
-                PackageManager.GET_META_DATA
+            packageName!!,
+            PackageManager.GET_META_DATA
         )
         return applicationInfo.loadLabel(manager)
     }
@@ -49,8 +49,8 @@ object CommonUtil {
     fun getAppIcon(context: Context, packageName: String?): Drawable? {
         val manager = context.packageManager
         val applicationInfo = manager.getApplicationInfo(
-                packageName!!,
-                PackageManager.GET_META_DATA
+            packageName!!,
+            PackageManager.GET_META_DATA
         )
         return applicationInfo.loadIcon(manager)
     }
@@ -83,13 +83,13 @@ object CommonUtil {
     fun parseTime(seconds: Long, showSeconds: Boolean): String {
         val day = TimeUnit.SECONDS.toDays(seconds).toInt()
         val hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(
-                TimeUnit.SECONDS.toDays(seconds)
+            TimeUnit.SECONDS.toDays(seconds)
         )
         val minute = TimeUnit.SECONDS.toMinutes(seconds) - TimeUnit.HOURS.toMinutes(
-                TimeUnit.SECONDS.toHours(seconds)
+            TimeUnit.SECONDS.toHours(seconds)
         )
         val second = TimeUnit.SECONDS.toSeconds(seconds) - TimeUnit.MINUTES.toSeconds(
-                TimeUnit.SECONDS.toMinutes(seconds)
+            TimeUnit.SECONDS.toMinutes(seconds)
         )
         val builder = StringBuilder()
         if (day > 0) {
@@ -204,10 +204,10 @@ object CommonUtil {
     }
 
     fun checkWidgetNeedAutoAdded(
-            context: Context,
-            cls: Class<*>,
-            configKey: String,
-            probability: Boolean
+        context: Context,
+        cls: Class<*>,
+        configKey: String,
+        probability: Boolean
     ) {
         if (!isWidgetAdded(context, cls)) {
             val isFirstAddWidget: Boolean = SharedPreferenceUtil.getBoolean(configKey, true)
@@ -328,6 +328,14 @@ object CommonUtil {
                 }
             }
         }
+    }
+
+    fun getFormattedNum(num: Float): String {
+        return DecimalFormat("0.#").format(num.toDouble())
+    }
+
+    fun formatCount(count: Long): String {
+        return if (count >= 10000) getFormattedNum(count / 10000f) + "w" else count.toString() + ""
     }
 
 }

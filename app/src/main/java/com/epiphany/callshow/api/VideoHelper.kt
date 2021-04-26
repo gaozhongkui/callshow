@@ -131,7 +131,13 @@ object VideoHelper {
             }
             thumbnail?.apply {
                 val videoInfo =
-                    VideoItemInfo(snippet.resourceId.videoId, url, width, height, snippet.title)
+                    VideoItemInfo(
+                        snippet.resourceId.videoId,
+                        url,
+                        width,
+                        height,
+                        title = snippet.title
+                    )
                 resultList.add(videoInfo)
             }
         }

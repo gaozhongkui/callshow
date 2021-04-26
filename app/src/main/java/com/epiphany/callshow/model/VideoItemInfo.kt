@@ -9,6 +9,8 @@ data class VideoItemInfo(
     val previewPng: String,
     val width: Long,
     val high: Long,
+    var viewCount: Long = 0,
+    var likeCount: Long = 0,
     val title: String? = null,
     var videoUrl: String? = null,
     var audioUrl: String? = null

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -36,14 +37,54 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginEnd="@dimen/dp_8"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_12"
             android:ellipsize="end"
             android:gravity="start"
             android:maxLines="2"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_14"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tv_likes_nums"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_likes_nums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:shadowColor="@color/black_alpha_30"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:text="2.3w"
+            android:textColor="@color/white_alpha_80"
+            android:textSize="@dimen/sp_12"
+            app:drawableLeftCompat="@drawable/ic_home_card_like"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tv_download_nums"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_12"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:shadowColor="@color/black_alpha_30"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="2.0"
+            android:text="38890"
+            android:textColor="@color/white_alpha_80"
+            android:textSize="@dimen/sp_12"
+            app:drawableLeftCompat="@drawable/ic_home_card_download"
+            app:layout_constraintBottom_toBottomOf="@id/tv_likes_nums"
+            app:layout_constraintStart_toEndOf="@id/tv_likes_nums"
+            app:layout_constraintTop_toTopOf="@id/tv_likes_nums"
+            tools:ignore="HardcodedText" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
