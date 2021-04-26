@@ -2,6 +2,7 @@ package com.epiphany.callshow.function.home
 
 import android.os.Bundle
 import android.widget.FrameLayout
+import androidx.viewpager.widget.ViewPager
 import com.epiphany.callshow.R
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.utils.StatusBarUtil
@@ -25,6 +26,14 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private fun initLayout() {
         mHomePageAdapter = HomePageAdapter(childFragmentManager)
         binding.viewPager.adapter = mHomePageAdapter
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                //当切换Tab时，则展会默认的Tab展示
+                binding.appbar.setExpanded(true, false)
+            }
+
+        })
         initStatusBarLayout()
     }
 
