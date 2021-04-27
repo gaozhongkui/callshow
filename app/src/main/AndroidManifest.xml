@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
 
     <application
         android:name=".App"
@@ -31,6 +32,23 @@
         <activity
             android:name=".function.video.VideoDetailsActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".function.wallpaper.WallpaperPreviewActivity"
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name=".function.wallpaper.WallpaperService"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:process=":wallpaper">
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/videowallpaper" />
+        </service>
+
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentVideoLayoutBinding
+import com.epiphany.callshow.function.wallpaper.WallpaperHelper
 import com.epiphany.callshow.model.VideoItemInfo
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.MediaItem
@@ -69,6 +70,19 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 } else {
                     isLoadingVideoRealPath.set(false)
                 }
+            }
+        }
+        initLayoutListener()
+    }
+
+    private fun initLayoutListener() {
+
+        binding.llSettingWallpaper.setOnClickListener {
+            if (!SystemInfo.isValidActivity(activity)) {
+                return@setOnClickListener
+            }
+            mVideoItemInfo?.apply {
+                WallpaperHelper.setToWallPaper(activity!!, videoUrl!!, audioUrl!!)
             }
         }
     }
@@ -241,7 +255,6 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         if (playbackState == Player.STATE_READY && !mPlayer!!.isPlaying && isResumed) {
             mPlayer?.play()
         }
-
     }
 
     /**
