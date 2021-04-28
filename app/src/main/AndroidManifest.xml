@@ -38,7 +38,7 @@
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".function.wallpaper.WallpaperService"
+            android:name=".function.wallpaper.VideoWallpaperService"
             android:permission="android.permission.BIND_WALLPAPER"
             android:process=":wallpaper">
             <intent-filter>

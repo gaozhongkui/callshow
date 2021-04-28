@@ -5,11 +5,13 @@ import android.app.WallpaperManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.service.wallpaper.WallpaperService
+import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 
 object WallpaperHelper {
     const val REQUEST_SET_LIVE_WALLPAPER = 1068
+    private val mHandler = Handler(Looper.getMainLooper())
 
     /**
      * 设置静音
@@ -36,7 +38,7 @@ object WallpaperHelper {
         val intent = Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER)
         intent.putExtra(
             WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
-            ComponentName(context, WallpaperService::class.java)
+            ComponentName(context, VideoWallpaperService::class.java)
         )
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
@@ -54,6 +56,14 @@ object WallpaperHelper {
         }
         act.startActivityForResult(wallpaperIntent, REQUEST_SET_LIVE_WALLPAPER)
 
+        mHandler.postDelayed({ startVideoWallPaperService(act, videoPath, audioPath) }, 500)
+    }
+
+    /**
+     * 启动壁纸服务
+     */
+    private fun startVideoWallPaperService(act: Activity, videoPath: String, audioPath: String) {
+        act.startService(VideoWallpaperService.getWallpaperService(act, videoPath, audioPath))
     }
 
     /**
