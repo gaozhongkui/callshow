@@ -1,14 +1,17 @@
 package com.epiphany.callshow.function.wallpaper
 
 import android.app.ActivityManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.opengl.GLSurfaceView
 import android.service.wallpaper.WallpaperService
 import android.text.TextUtils
 import android.util.Log
 import android.view.SurfaceHolder
+import com.epiphany.callshow.common.utils.SharedPreferenceUtil
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.function.video.VideoPlayHelper
 import com.google.android.exoplayer2.MediaItem
@@ -23,6 +26,7 @@ import com.google.android.exoplayer2.upstream.DataSource
 
 class VideoWallpaperService : WallpaperService() {
     private var mVideoWallPagerEngine: GLWallpaperEngine? = null
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(
             TAG,
@@ -31,9 +35,14 @@ class VideoWallpaperService : WallpaperService() {
         intent?.apply {
             val mVideoPath = getStringExtra(EXTRA_VIDEO_INFO)
             val mAudioPath = getStringExtra(EXTRA_AUDIO_INFO)
-            //判断对象不为空时,进行设置
-            if (!TextUtils.isEmpty(mVideoPath) && !TextUtils.isEmpty(mAudioPath)) {
-                mVideoWallPagerEngine?.onChangeVideoPath(mVideoPath!!, mAudioPath!!)
+            if (mVideoWallPagerEngine != null) {
+                mVideoPath?.apply {
+                    SharedPreferenceUtil.setString(KEY_SHARE_VIDEO_PATH, this)
+                }
+                mAudioPath?.apply {
+                    SharedPreferenceUtil.setString(KEY_SHARE_AUDIO_PATH, this)
+                }
+                mVideoWallPagerEngine?.onChangeVideoPathNotify()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -47,15 +56,26 @@ class VideoWallpaperService : WallpaperService() {
 
     private inner class GLWallpaperEngine(private val context: Context) : Engine(),
         Player.EventListener {
+        private var mVideoVoiceControlReceiver: BroadcastReceiver? = null
         private var glSurfaceView: GLWallpaperSurfaceView? = null
         private var renderer: GLWallpaperRenderer? = null
         private var exoPlayer: SimpleExoPlayer? = null
         private var videoSource: MediaSource? = null
-        private var mVideoPath: String? = null
-        private var mAudioPath: String? = null
 
         init {
             setTouchEventsEnabled(false)
+        }
+
+        override fun onCreate(surfaceHolder: SurfaceHolder?) {
+            super.onCreate(surfaceHolder)
+            val intentFilter = IntentFilter(VIDEO_PARAMS_CONTROL_ACTION)
+            mVideoVoiceControlReceiver = VideoVoiceControlReceiver()
+            registerReceiver(mVideoVoiceControlReceiver, intentFilter)
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            unregisterReceiver(mVideoVoiceControlReceiver)
         }
 
         override fun onSurfaceCreated(holder: SurfaceHolder?) {
@@ -107,13 +127,14 @@ class VideoWallpaperService : WallpaperService() {
             if (exoPlayer != null) {
                 stopPlayer()
             }
+            val videoPath = SharedPreferenceUtil.getString(KEY_SHARE_VIDEO_PATH)
+            val audioPath = SharedPreferenceUtil.getString(KEY_SHARE_AUDIO_PATH)
             //判断路径地址为空时,则直接返回
-            if (TextUtils.isEmpty(mVideoPath) || TextUtils.isEmpty(mAudioPath)) {
+            if (TextUtils.isEmpty(videoPath) || TextUtils.isEmpty(audioPath)) {
                 return
             }
-
-            val videoUri = Uri.parse(mVideoPath)
-            val audioUri = Uri.parse(mAudioPath)
+            val videoUri = Uri.parse(videoPath)
+            val audioUri = Uri.parse(audioPath)
             val dataSourceFactory: DataSource.Factory =
                 VideoPlayHelper.getDataSourceFactory(context)
             val videoMediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -131,6 +152,7 @@ class VideoWallpaperService : WallpaperService() {
                     SystemInfo.getScreenHeight(),
                     0
                 )
+                volume = 0f
                 repeatMode = Player.REPEAT_MODE_ALL
                 addListener(this@GLWallpaperEngine)
                 setMediaSource(loopingMediaSource)
@@ -181,12 +203,23 @@ class VideoWallpaperService : WallpaperService() {
         }
 
         /**
-         * 更改视频地址
+         * 视频地址更改提醒
          */
-        fun onChangeVideoPath(videoPath: String, audioPath: String) {
-            mVideoPath = videoPath
-            mAudioPath = audioPath
+        fun onChangeVideoPathNotify() {
             startPlayer()
+        }
+
+        private inner class VideoVoiceControlReceiver : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                when (intent.getIntExtra(ACTION, -1)) {
+                    ACTION_VOICE_NORMAL -> {
+                        exoPlayer?.volume = 1.0f
+                    }
+                    ACTION_VOICE_SILENCE -> {
+                        exoPlayer?.volume = 1.0f
+                    }
+                }
+            }
         }
 
         private inner class GLWallpaperSurfaceView(context: Context) : GLSurfaceView(context) {
@@ -211,6 +244,8 @@ class VideoWallpaperService : WallpaperService() {
         private const val TAG = "WallpaperService"
         private const val EXTRA_VIDEO_INFO = "extra_video_path"
         private const val EXTRA_AUDIO_INFO = "extra_audio_path"
+        private const val KEY_SHARE_VIDEO_PATH = "key_share_video_path"
+        private const val KEY_SHARE_AUDIO_PATH = "key_share_audio_path"
 
         fun getWallpaperService(cxt: Context, videoPath: String, audioPath: String): Intent {
             val intent = Intent(cxt, VideoWallpaperService::class.java)

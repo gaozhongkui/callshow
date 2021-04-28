@@ -19,7 +19,7 @@
             app:show_shuffle_button="true"
             app:show_subtitle_button="true"
             app:shutter_background_color="@android:color/transparent"
-            app:surface_type="texture_view"
+            app:surface_type="surface_view"
             app:use_controller="false" />
 
         <TextView
