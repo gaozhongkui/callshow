@@ -28,4 +28,9 @@
         <item name="android:windowNoTitle">true</item><!--除去title-->
         <item name="android:windowBackground">@android:color/transparent</item><!--除去背景色-->
     </style>
+
+    <style name="customDialogAnim" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
 </resources>
