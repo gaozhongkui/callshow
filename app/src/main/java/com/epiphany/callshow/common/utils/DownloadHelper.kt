@@ -6,19 +6,20 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
-import android.os.Environment
-import android.provider.MediaStore
 import android.text.TextUtils
 import android.util.Log
 import com.epiphany.callshow.model.VideoItemInfo
 import java.io.File
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * 用于下载辅助类
  */
 object DownloadHelper {
+    private const val DEFAULT_DOWNLOAD_FILE_COUNT = 2
     private const val VIDEO_DIR = "video_dir"
     private const val TAG = "DownloadHelper"
+    private val mDownloadFileCount = AtomicInteger()
 
     /**
      * 下载视频文件
@@ -27,26 +28,37 @@ object DownloadHelper {
         cxt: Context,
         info: VideoItemInfo,
         listener: IDownloadMangerListener? = null,
-        //给一个默认名字
-        fileName: String = getFileName(info.videoUrl)
     ) {
         val videoUrl = info.videoUrl
-        if (TextUtils.isEmpty(videoUrl)) {
+        val audioUrl = info.audioUrl
+        if (TextUtils.isEmpty(videoUrl) || TextUtils.isEmpty(audioUrl)) {
+            listener?.onDownloadFailed("file name is empty")
             return
         }
-        val destFilePath = File(getDownloadDir(cxt), fileName)
+        val videoFilePath = File(getDownloadDir(cxt), Hash.md5(getHttpFileName(videoUrl)))
+        val audioFilePath = File(getDownloadDir(cxt), Hash.md5(getHttpFileName(audioUrl)))
         //判断如果文件已经存在时，则直接返回结果
-        if (destFilePath.exists()) {
-            listener?.onDownloadComplete(destFilePath.absolutePath)
+        if (videoFilePath.exists() && audioFilePath.exists()) {
+            listener?.onDownloadComplete(videoFilePath.absolutePath, audioFilePath.absolutePath)
             return
         }
-
+        //设置默认的文件数量
+        mDownloadFileCount.set(DEFAULT_DOWNLOAD_FILE_COUNT)
         val downloadManager = cxt.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val request = DownloadManager.Request(Uri.parse(videoUrl))
-        request.setDestinationUri(Uri.fromFile(destFilePath))
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
-        val enqueue = downloadManager.enqueue(request)
-        DownloadReceiver.registerReceiver(cxt, destFilePath.absolutePath, listener)
+        val videoRequest = DownloadManager.Request(Uri.parse(videoUrl))
+        val audioRequest = DownloadManager.Request(Uri.parse(audioUrl))
+        videoRequest.setDestinationUri(Uri.fromFile(videoFilePath))
+        audioRequest.setDestinationUri(Uri.fromFile(audioFilePath))
+        videoRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
+        audioRequest.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
+        downloadManager.enqueue(videoRequest)
+        downloadManager.enqueue(audioRequest)
+        DownloadReceiver.registerReceiver(
+            cxt,
+            videoFilePath.absolutePath,
+            audioFilePath.absolutePath,
+            listener
+        )
     }
 
     /**
@@ -61,16 +73,15 @@ object DownloadHelper {
     /**
      * 获取文件名称
      */
-    private fun getFileName(filePath: String?): String {
+    private fun getHttpFileName(filePath: String?): String {
         if (TextUtils.isEmpty(filePath)) {
             return System.currentTimeMillis().toString()
         }
-        val file = File(filePath)
-        val index = file.name.indexOf("?")
+        val index = filePath!!.indexOf("?")
         if (index <= 0) {
-            return filePath!!
+            return filePath
         }
-        return file.name.substring(0, index)
+        return filePath.substring(index + 1)
     }
 
     private class DownloadReceiver : BroadcastReceiver() {
@@ -83,10 +94,17 @@ object DownloadHelper {
                 if (action.equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)) {
                     Log.d(TAG, "onReceive() called")
 
+                    val remainingFileCount = mDownloadFileCount.decrementAndGet()
+                    //剩余文件数量,判断如果大于0时,则直接返回
+                    if (remainingFileCount > 0) {
+                        return
+                    }
+
                     listener?.apply {
-                        if (destFilePath != null) {
-                            onDownloadComplete(destFilePath!!)
-                        }
+                        if (TextUtils.isEmpty(videoDestFilePath)
+                            || TextUtils.isEmpty(audioDestFilePath)
+                        ) return
+                        onDownloadComplete(videoDestFilePath!!, audioDestFilePath!!)
                     }
                     unRegisterReceiver(context!!)
                 }
@@ -97,15 +115,18 @@ object DownloadHelper {
         companion object {
             private var receiver: DownloadReceiver? = null
             private var listener: IDownloadMangerListener? = null
-            private var destFilePath: String? = null
+            private var videoDestFilePath: String? = null
+            private var audioDestFilePath: String? = null
             fun registerReceiver(
                 context: Context,
-                filePath: String,
+                videoDestFilePath: String,
+                audioDestFilePath: String,
                 listener: IDownloadMangerListener? = null
             ) {
                 receiver = DownloadReceiver()
                 this.listener = listener
-                this.destFilePath = filePath
+                this.videoDestFilePath = videoDestFilePath
+                this.audioDestFilePath = audioDestFilePath
                 val intentFilter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
                 try {
                     context.registerReceiver(receiver, intentFilter)
@@ -130,7 +151,7 @@ object DownloadHelper {
 
 
     interface IDownloadMangerListener {
-        fun onDownloadComplete(filePath: String)
+        fun onDownloadComplete(videoUrl: String, audioUrl: String)
         fun onDownloadFailed(reason: String)
     }
 }

@@ -13,8 +13,11 @@ import com.epiphany.callshow.R
 import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.base.BaseViewModel
+import com.epiphany.callshow.common.utils.DownloadHelper
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentVideoLayoutBinding
+import com.epiphany.callshow.dialog.DialogUtil
+import com.epiphany.callshow.dialog.SettingFunProgressDialog
 import com.epiphany.callshow.function.wallpaper.WallpaperHelper
 import com.epiphany.callshow.model.VideoItemInfo
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -48,6 +51,12 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     //是否加载真实的路径
     private var isLoadingVideoRealPath = AtomicBoolean(false)
 
+    //判断是否执行设置壁纸动作
+    private var isRunSettingWallpaperAction = AtomicBoolean(false)
+
+    //设置进度弹框
+    private var mSettingFunProgressDialog: SettingFunProgressDialog? = null
+
     override fun getBindLayout(): Int = R.layout.fragment_video_layout
 
     override fun getViewModelClass(): Class<BaseViewModel> {
@@ -58,7 +67,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         arguments?.apply {
             val isVideoDetails = getBoolean(EXTRA_IS_VIDEO_DETAILS, false)
             setBottomLayoutState(isVideoDetails)
-            mVideoItemInfo = getParcelable<VideoItemInfo>(EXTRA_VIDEO_INFO)
+            mVideoItemInfo = getParcelable(EXTRA_VIDEO_INFO)
             mVideoItemInfo?.apply {
                 binding.loadingView.visibility = View.VISIBLE
                 showPlaceholderView()
@@ -81,9 +90,59 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
             if (!SystemInfo.isValidActivity(activity)) {
                 return@setOnClickListener
             }
-            mVideoItemInfo?.apply {
-                WallpaperHelper.setToWallPaper(activity!!, videoUrl!!, audioUrl!!)
+            setVideoWallpaper()
+        }
+    }
+
+    fun setVideoWallpaper() {
+        if (mVideoItemInfo == null || !SystemInfo.isValidActivity(activity)) {
+            return
+        }
+        showLoadingDialog()
+
+        //判断如果真实地址正在加载中,则设置状态后,直接返回
+        if (isLoadingVideoRealPath.get()) {
+            isRunSettingWallpaperAction.set(true)
+            return
+        }
+        isRunSettingWallpaperAction.set(false)
+        DownloadHelper.downloadVideo(activity!!, mVideoItemInfo!!, object :
+            DownloadHelper.IDownloadMangerListener {
+            override fun onDownloadComplete(videoUrl: String, audioUrl: String) {
+                hideLoadingDialog()
+                if (SystemInfo.isValidActivity(activity)) {
+                    WallpaperHelper.setToWallPaper(activity!!, videoUrl, audioUrl)
+                }
             }
+
+            override fun onDownloadFailed(reason: String) {
+                hideLoadingDialog()
+            }
+
+        })
+
+    }
+
+
+    /**
+     * 展示Loading弹框
+     */
+    private fun showLoadingDialog() {
+        if (!SystemInfo.isValidActivity(activity)) {
+            return
+        }
+        mSettingFunProgressDialog?.apply {
+            DialogUtil.dismissDialog(this)
+        }
+        mSettingFunProgressDialog = SettingFunProgressDialog.showLoadingDialog(activity!!)
+    }
+
+    /**
+     * 隐藏弹框展示
+     */
+    private fun hideLoadingDialog() {
+        mSettingFunProgressDialog?.let {
+            DialogUtil.dismissDialog(it)
         }
     }
 
@@ -98,10 +157,10 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     /**
      * 加载真实的路径地址
      */
-    private fun loadVideoRealPath() {
+    private fun loadVideoRealPath(forciblyQuery: Boolean = false) {
         GlobalScope.launch {
             mVideoItemInfo?.apply {
-                val videoRealInfo = getVideoRealPathStr(videoId)
+                val videoRealInfo = getVideoRealPathStr(videoId, forciblyQuery)
                 withContext(Dispatchers.Main) {
                     videoUrl = videoRealInfo.videoUrl
                     audioUrl = videoRealInfo.audioUrl
@@ -110,6 +169,10 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                     //判断当前页面不可见时，则直接返回
                     if (!isResumed || !isAdded) {
                         return@withContext
+                    }
+                    //判断如果执行设置壁纸时,则执行这个动作
+                    if (isRunSettingWallpaperAction.get()) {
+                        setVideoWallpaper()
                     }
                     initializePlayer()
                 }
@@ -274,7 +337,8 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 if (this is HttpDataSource.InvalidResponseCodeException) {
                     //视频地址不存在
                     if (responseCode == 403) {
-                        // TODO: 2021/4/25 编写视频地址不存在的逻辑
+                        releasePlayer()
+                        loadVideoRealPath(true)
                     }
                 }
             }
