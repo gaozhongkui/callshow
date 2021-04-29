@@ -34,7 +34,7 @@ class CallShowDisplayActivity : BaseActivity<BaseViewModel, ActivityCallShowDisp
             val videosItemInfo = getParcelableExtra<VideoItemInfo>(EXTRA_VIDEO_INFO)
             videosItemInfo?.let {
                 val transaction = supportFragmentManager.beginTransaction()
-                val mFragment = VideoFragment.newInstance(it, isShowControlView = false)
+                val mFragment = VideoFragment.newInstance(it,true, isShowControlView = false)
                 transaction.replace(R.id.fl_content, mFragment)
                 transaction.commit()
             }
