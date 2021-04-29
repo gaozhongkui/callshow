@@ -40,4 +40,45 @@
         <!--view最小高度-->
         <attr name="minHeight" format="dimension" />
     </declare-styleable>
+
+
+    <declare-styleable name="ShimmerFrameLayout">
+        <attr name="auto_start1" format="boolean" />
+        <attr name="base_alpha1" format="float" />
+        <attr name="duration1" format="integer" />
+        <attr name="repeat_count1" format="integer" />
+        <attr name="repeat_delay1" format="integer" />
+        <attr name="repeat_mode1" format="enum">
+            <enum name="restart1" value="1" />
+            <enum name="reverse1" value="2" />
+        </attr>
+        <attr name="angle1" format="enum">
+            <enum name="cw_01" value="0" />
+            <enum name="cw_901" value="90" />
+            <enum name="cw_1801" value="180" />
+            <enum name="cw_2701" value="270" />
+        </attr>
+        <attr name="dropoff1" format="float" />
+        <attr name="fixed_width1" format="dimension" />
+        <attr name="fixed_height1" format="dimension" />
+        <attr name="intensity1" format="float" />
+        <attr name="relative_width1" format="float" />
+        <attr name="relative_height1" format="float" />
+        <attr name="shape1" format="enum">
+            <enum name="linear1" value="0" />
+            <enum name="radial1" value="1" />
+        </attr>
+        <attr name="tilt1" format="float" />
+    </declare-styleable>
+
+
+    <declare-styleable name="ShimmerLayout">
+        <attr name="shimmer_color" format="color|reference" />
+        <attr name="shimmer_animation_duration" format="integer|reference" />
+        <attr name="shimmer_auto_start" format="boolean|reference" />
+        <attr name="shimmer_angle" format="integer|reference" />
+        <attr name="shimmer_mask_width" format="float|reference" />
+        <attr name="shimmer_gradient_center_color_width" format="float|reference" />
+        <attr name="shimmer_reverse_animation" format="boolean|reference" />
+    </declare-styleable>
 </resources>
