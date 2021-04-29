@@ -29,11 +29,23 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription,RtlSymmetry" />
 
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_20"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_back_but"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="anim/default_avatar.json"
+            app:lottie_loop="true" />
+
         <TextView
             android:id="@+id/tv_phone_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_10"
             android:shadowColor="@color/black_alpha_20"
             android:shadowDx="2"
             android:shadowDy="2"
@@ -44,7 +56,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_back_but" />
+            app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
 
         <TextView
             android:id="@+id/tv_phone_number"
