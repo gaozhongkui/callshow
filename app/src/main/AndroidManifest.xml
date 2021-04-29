@@ -32,10 +32,20 @@
 
         <activity
             android:name=".function.video.VideoDetailsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:resizeableActivity="true"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".function.wallpaper.WallpaperPreviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".function.callshow.CallShowDisplayActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:resizeableActivity="true"
             android:screenOrientation="portrait" />
 
         <service

@@ -18,6 +18,7 @@ import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentVideoLayoutBinding
 import com.epiphany.callshow.dialog.DialogUtil
 import com.epiphany.callshow.dialog.SettingFunProgressDialog
+import com.epiphany.callshow.function.callshow.CallShowDisplayActivity
 import com.epiphany.callshow.function.wallpaper.WallpaperHelper
 import com.epiphany.callshow.model.VideoItemInfo
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -65,8 +66,8 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
 
     override fun initView() {
         arguments?.apply {
-            val isVideoDetails = getBoolean(EXTRA_IS_VIDEO_DETAILS, false)
-            setBottomLayoutState(isVideoDetails)
+            setBottomLayoutState(getBoolean(EXTRA_IS_VIDEO_DETAILS, false))
+            setControlViewDisplayState(getBoolean(EXTRA_IS_SHOW_CONTROL_VIEW, true))
             mVideoItemInfo = getParcelable(EXTRA_VIDEO_INFO)
             mVideoItemInfo?.apply {
                 binding.loadingView.visibility = View.VISIBLE
@@ -91,6 +92,13 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 return@setOnClickListener
             }
             setVideoWallpaper()
+        }
+
+        binding.llPreview.setOnClickListener {
+            if (!SystemInfo.isValidActivity(activity)) {
+                return@setOnClickListener
+            }
+            CallShowDisplayActivity.launchActivity(activity!!, mVideoItemInfo)
         }
     }
 
@@ -145,6 +153,25 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
             DialogUtil.dismissDialog(it)
         }
     }
+
+    /**
+     * 显示控制布局的展示状态
+     */
+    private fun setControlViewDisplayState(isShow: Boolean) {
+        Log.d(TAG, "setControlViewDisplayState() called with: isShow = $isShow")
+        if (isShow) {
+            binding.tvSettingCallShow.visibility = View.VISIBLE
+            binding.llSettingWallpaper.visibility = View.VISIBLE
+            binding.llPreview.visibility = View.VISIBLE
+            binding.tvTitle.visibility = View.VISIBLE
+        } else {
+            binding.tvSettingCallShow.visibility = View.GONE
+            binding.llSettingWallpaper.visibility = View.GONE
+            binding.llPreview.visibility = View.GONE
+            binding.tvTitle.visibility = View.GONE
+        }
+    }
+
 
     private fun setBottomLayoutState(isVideoDetails: Boolean) {
         if (isVideoDetails) {
@@ -351,11 +378,17 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         private const val TAG = "video_tag"
         private const val EXTRA_VIDEO_INFO = "extra_video_info"
         private const val EXTRA_IS_VIDEO_DETAILS = "extra_is_video_details"
-        fun newInstance(videoInfo: VideoItemInfo, isVideoDetails: Boolean = false): VideoFragment {
+        private const val EXTRA_IS_SHOW_CONTROL_VIEW = "extra_is_show_control_view"
+        fun newInstance(
+            videoInfo: VideoItemInfo,
+            isVideoDetails: Boolean = false,
+            isShowControlView: Boolean = true
+        ): VideoFragment {
             val fragment = VideoFragment()
             val bundle = Bundle()
             bundle.putParcelable(EXTRA_VIDEO_INFO, videoInfo)
             bundle.putBoolean(EXTRA_IS_VIDEO_DETAILS, isVideoDetails)
+            bundle.putBoolean(EXTRA_IS_SHOW_CONTROL_VIEW, isShowControlView)
             fragment.arguments = bundle
             return fragment
         }
