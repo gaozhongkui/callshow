@@ -103,6 +103,8 @@ dependencies {
     //smart tab
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
+    implementation project(':Call')
+
     //room
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
