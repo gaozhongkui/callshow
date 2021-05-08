@@ -48,6 +48,35 @@
             android:resizeableActivity="true"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".function.callshow.PhoneCallActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:theme="@style/CallShow.Phone">
+
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="tel" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.DIAL" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tel" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".function.wallpaper.VideoWallpaperService"
             android:permission="android.permission.BIND_WALLPAPER"
