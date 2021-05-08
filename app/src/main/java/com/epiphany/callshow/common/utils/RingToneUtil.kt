@@ -37,12 +37,12 @@ object RingToneUtil {
         var cursor: Cursor? = null
         try {
             cursor = context.contentResolver.query(
-                    uri!!,
-                    null,
-                    "${MediaStore.MediaColumns.DATA}=?",
-                    arrayOf(path),
-                    null,
-                    null
+                uri!!,
+                null,
+                "${MediaStore.MediaColumns.DATA}=?",
+                arrayOf(path),
+                null,
+                null
             )
             cursor?.let {
                 newUri = if (it.count > 0) {
@@ -50,28 +50,26 @@ object RingToneUtil {
                     id = it.getString(it.getColumnIndex(MediaStore.MediaColumns._ID))
                     Uri.withAppendedPath(uri, id)
                 } else {
-                    val id = context.contentResolver.delete(
-                            uri!!,
-                            MediaStore.MediaColumns.DATA + "=?",
-                            arrayOf(path)
+                    context.contentResolver.delete(
+                        uri,
+                        MediaStore.MediaColumns.DATA + "=?",
+                        arrayOf(path)
                     )
                     context.contentResolver.insert(uri!!, values)
                 }
             }
             Log.d("ringtone", "id:$id newUri:$newUri uri:$uri")
             RingtoneManager.setActualDefaultRingtoneUri(
-                    context,
-                    RingtoneManager.TYPE_RINGTONE,
-                    newUri
+                context,
+                RingtoneManager.TYPE_RINGTONE,
+                newUri
             )
             Log.d("ringtone", "set end id:$id newUri:$newUri uri:$uri")
             return newUri != null
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
-            cursor?.let {
-                it.close()
-            }
+            cursor?.close()
         }
         return false
     }
@@ -87,18 +85,15 @@ object RingToneUtil {
 
     fun hasSetRingTone(context: Context, ringPath: String): Boolean {
         val ringtoneUri =
-                RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE)
-        if (ringtoneUri == null) {
-            return false
-        }
+            RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE) ?: return false
         var cursor: Cursor? = null
         try {
             cursor = context.contentResolver.query(ringtoneUri, null, null, null, null)
             if (cursor!!.moveToFirst()) {
                 val path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
                 Log.d(
-                        "ringtone",
-                        "hasSetRingTone ringtoneUri:$ringtoneUri path:$path ringPath:$ringPath"
+                    "ringtone",
+                    "hasSetRingTone ringtoneUri:$ringtoneUri path:$path ringPath:$ringPath"
                 )
                 if (ringPath.isNotBlank() && ringPath == path) {
                     return true
@@ -114,10 +109,7 @@ object RingToneUtil {
 
     fun getCurrentRingTonePath(context: Context): String? {
         val ringtoneUri =
-                RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE)
-        if (ringtoneUri == null) {
-            return null
-        }
+            RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE) ?: return null
         var cursor: Cursor? = null
         try {
             cursor = context.contentResolver.query(ringtoneUri, null, null, null, null)
@@ -185,7 +177,11 @@ object RingToneUtil {
                 if (ring > 0) {
                     audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, ring, AudioManager.FLAG_PLAY_SOUND)
                 } else {
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_PLAY_SOUND)
+                    audioManager.setStreamVolume(
+                        AudioManager.STREAM_MUSIC,
+                        audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                        AudioManager.FLAG_PLAY_SOUND
+                    )
                 }
             }
         }
