@@ -6,6 +6,23 @@ import android.os.Looper
 import com.epiphany.call.overloads.times
 import java.util.*
 
+
+// shared prefs
+const val SPEED_DIAL = "speed_dial"
+const val REMEMBER_SIM_PREFIX = "remember_sim_"
+const val GROUP_SUBSEQUENT_CALLS = "group_subsequent_calls"
+
+const val CONTACTS_TAB_MASK = 1
+const val FAVORITES_TAB_MASK = 2
+const val RECENTS_TAB_MASK = 4
+
+val tabsList = arrayListOf(CONTACTS_TAB_MASK, FAVORITES_TAB_MASK, RECENTS_TAB_MASK)
+
+private const val PATH = "com.simplemobiletools.dialer.action."
+const val ACCEPT_CALL = PATH + "accept_call"
+const val DECLINE_CALL = PATH + "decline_call"
+
+
 const val APP_NAME = "app_name"
 const val APP_LICENSES = "app_licenses"
 const val APP_FAQ = "app_faq"

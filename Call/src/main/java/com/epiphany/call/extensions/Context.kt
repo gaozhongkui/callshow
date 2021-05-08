@@ -1,6 +1,7 @@
 package com.epiphany.call.extensions
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.NotificationManager
@@ -12,6 +13,7 @@ import android.content.res.Configuration
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Point
+import android.media.AudioManager
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Build
@@ -809,3 +811,5 @@ fun Context.isDefaultDialer(): Boolean {
         isMarshmallowPlus() && telecomManager.defaultDialerPackage == packageName
     }
 }
+
+val Context.audioManager: AudioManager get() = getSystemService(Context.AUDIO_SERVICE) as AudioManager

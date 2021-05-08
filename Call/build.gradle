@@ -49,4 +49,9 @@ dependencies {
     api 'com.github.ajalt.reprint:core:3.3.0@aar'
     api 'com.google.code.gson:gson:2.8.6'
 
+    //谷歌电话号码归属地库
+    api 'com.googlecode.libphonenumber:libphonenumber:8.10.3'
+    api 'com.googlecode.libphonenumber:carrier:1.99'
+    api 'com.googlecode.libphonenumber:geocoder:2.99'
+
 }

@@ -18,4 +18,24 @@
     <string name="preview">Preview</string>
     <string name="apply">Apply</string>
     <string name="helping_you_to_set_your_wallpaper">正在帮您设置壁纸…</string>
+
+    <string name="sound_recording">录音</string>
+    <string name="dial_up_keyboard">拨号键盘</string>
+    <string name="on_speakerphone">免提</string>
+    <string name="add_phone">添加电话</string>
+    <string name="keep">保持</string>
+    <string name="mute">静音</string>
+
+    <string name="dialer">拨号器</string>
+    <string name="accept">接听</string>
+    <string name="decline">拒绝</string>
+    <string name="unknown_caller">未知呼叫</string>
+    <string name="is_calling">正在呼叫…</string>
+    <string name="dialing">拨号中…</string>
+    <string name="call_ended">通话结束</string>
+    <string name="call_ending">通话正在结束</string>
+    <string name="ongoing_call">呼入通话</string>
+    <string name="select_sim">为此通话选择一个 SIM 卡</string>
+    <string name="always_use_this_sim">为此号码一直使用该 SIM 卡</string>
+    <string name="unset_default_sim">取消设置默认 SIM 卡</string>
 </resources>
