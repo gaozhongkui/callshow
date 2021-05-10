@@ -1,7 +1,13 @@
 package com.epiphany.call.callshow
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
+import android.telecom.TelecomManager
 import android.text.TextUtils
+import androidx.fragment.app.Fragment
+import com.epiphany.call.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
 import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberToCarrierMapper
 import com.google.i18n.phonenumbers.PhoneNumberUtil
@@ -63,5 +69,35 @@ object PhoneHelper {
             return mGeocoder.getDescriptionForNumber(referencePhoneNumber, Locale.CHINA)
         }
         return null
+    }
+
+    /**
+     * 设置默认电话权限
+     */
+    fun setDefaultPhoneAppSetting(fragment: Fragment) {
+        fragment.context?.let { cxt ->
+            if (Build.MODEL == "TRT-AL00") {
+                launchToDefaultAppSetting(cxt)
+            } else {
+                Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER).putExtra(
+                    TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME,
+                    cxt.packageName
+                ).apply {
+                    try {
+                        fragment.startActivityForResult(this, REQUEST_CODE_SET_DEFAULT_DIALER)
+                    } catch (e: Exception) {
+                        try {
+                            launchToDefaultAppSetting(cxt)
+                        } catch (ex: Exception) {
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun launchToDefaultAppSetting(context: Context) {
+        context.startActivity(Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS))
     }
 }

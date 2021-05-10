@@ -10,6 +10,7 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.epiphany.call.callshow.PhoneHelper
 import com.epiphany.callshow.R
 import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
@@ -108,11 +109,10 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
             if (!EventIntervalUtils.canClick()) {
                 return@setOnClickListener
             }
-            if (PermissionManager.checkNecessaryPermission(it.context)) {
+            if (PermissionManager.checkDefPhoneApp(it.context)) {
 //                jumpContactAct()
             } else {
-                val intent = CheckPermissionActivity.getActIntent(context!!)
-                startActivityForResult(intent, PERMISSION_EXCLUSIVE_REQUEST_CODE)
+                PhoneHelper.setDefaultPhoneAppSetting(this)
             }
         }
     }
@@ -400,7 +400,6 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         private const val EXTRA_VIDEO_INFO = "extra_video_info"
         private const val EXTRA_IS_VIDEO_DETAILS = "extra_is_video_details"
         private const val EXTRA_IS_SHOW_CONTROL_VIEW = "extra_is_show_control_view"
-        private const val PERMISSION_EXCLUSIVE_REQUEST_CODE = 2
         fun newInstance(
             videoInfo: VideoItemInfo,
             isVideoDetails: Boolean = false,
