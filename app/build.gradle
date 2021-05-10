@@ -88,6 +88,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-cronet:2.13.3'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
 
+    //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
@@ -110,5 +111,8 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     kapt("androidx.room:room-compiler:$room_version")
+
+    //权限库
+    implementation 'pub.devrel:easypermissions:3.0.0'
 
 }

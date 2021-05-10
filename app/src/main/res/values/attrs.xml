@@ -81,4 +81,18 @@
         <attr name="shimmer_gradient_center_color_width" format="float|reference" />
         <attr name="shimmer_reverse_animation" format="boolean|reference" />
     </declare-styleable>
+
+    <declare-styleable name="BottomBtnView">
+        <attr name="android:text" />
+        <!--宽度占父容器宽度比例 def:7/9也就是设计稿最常见的一个比例-->
+        <attr name="b_btn_width_radio" format="reference|float" />
+    </declare-styleable>
+
+    <declare-styleable name="CommTitleBar">
+        <!--是否隐藏状态栏-->
+        <attr name="comm_title_hide_bar" format="boolean|reference" />
+        <!--标题名称-->
+        <attr name="comm_title_title_content" format="string|reference" />
+        <attr name="comm_title_background" format="dimension|color" />
+    </declare-styleable>
 </resources>

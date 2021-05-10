@@ -37,4 +37,5 @@
     <color name="white_alpha_10">#1AFFFFFF</color>
     <color name="white_alpha_5">#0FFFFFFF</color>
 
+    <color name="main_bg">#FFF5F5F5</color>
 </resources>

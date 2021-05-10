@@ -10,6 +10,7 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.content.pm.ShortcutManager
 import android.content.res.Configuration
+import android.content.res.TypedArray
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Point
@@ -25,6 +26,7 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore.*
 import android.provider.OpenableColumns
 import android.telecom.TelecomManager
+import android.util.AttributeSet
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
@@ -813,3 +815,19 @@ fun Context.isDefaultDialer(): Boolean {
 }
 
 val Context.audioManager: AudioManager get() = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+
+//校验某个权限是否被允许
+fun Context.checkPermissionEnable(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+}
+
+
+//自动释放的TypeArray
+fun Context.safeTypeArray(attrs: AttributeSet?, array: IntArray, block: (TypedArray) -> Unit) {
+    if (attrs == null) return
+    val typedArray = obtainStyledAttributes(attrs, array)
+    block.invoke(typedArray)
+    typedArray.recycle()
+}
+

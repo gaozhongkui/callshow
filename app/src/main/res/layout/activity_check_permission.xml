@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.epiphany.callshow.widget.CommTitleBar
+            android:id="@+id/title"
+            app:comm_title_background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:comm_title_title_content="@string/check_permission_title" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_14"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="@string/permission_des"
+            android:textColor="@color/black_alpha_80"
+            android:textSize="@dimen/sp_16" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_20"
+            android:background="@drawable/shape_white_radii_16"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/dp_20"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_permission_item" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/dp_12">
+
+            <com.epiphany.callshow.widget.BottomBtnView
+                android:layout_gravity="bottom|center_horizontal"
+                android:onClick="onSettingClick"
+                app:shimmer_auto_start="true"
+                app:shimmer_color="@color/white_alpha_60"
+                android:text="@string/permission_bottom_but"
+                android:layout_marginBottom="@dimen/dp_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
+
+    </LinearLayout>
+</layout>

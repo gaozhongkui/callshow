@@ -38,4 +38,22 @@
     <string name="select_sim">为此通话选择一个 SIM 卡</string>
     <string name="always_use_this_sim">为此号码一直使用该 SIM 卡</string>
     <string name="unset_default_sim">取消设置默认 SIM 卡</string>
+
+    <!--  来电秀权限页面   -->
+    <string name="permission_title">权限</string>
+    <string name="check_permission_title">修复工具</string>
+    <string name="permission_name_float_window">展示来电视频</string>
+    <string name="permission_name_notification">读取来电通知</string>
+    <string name="permission_name_app_auto_start">保持来电秀正常启动</string>
+    <string name="permission_name_revise_sys_setting">修改手机来电铃声</string>
+    <string name="permission_name_def_phone_app">替换来电页面</string>
+    <string name="permission_des">开启权限后才能正常使用来电秀</string>
+    <string name="permission_bottom_but">设置来电秀</string>
+    <string name="permission_guide_des1">为了保证%s正常使用，部分权限需要手动开启</string>
+    <string name="permission_to_open">去开启</string>
+    <string name="permission_to_setting">前往设置</string>
+    <string name="permission_accessible_des">找到%s开启无障碍服务</string>
+    <string name="permission_auto_start_title">是否已经开启【自启动】权限</string>
+
+    <string name="local_video_bottom_btn">从链接导入来电秀</string>
 </resources>
