@@ -1,5 +1,6 @@
 package com.epiphany.callshow.function.video
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
@@ -14,11 +15,14 @@ import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.common.utils.DownloadHelper
+import com.epiphany.callshow.common.utils.EventIntervalUtils
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentVideoLayoutBinding
 import com.epiphany.callshow.dialog.DialogUtil
 import com.epiphany.callshow.dialog.SettingFunProgressDialog
 import com.epiphany.callshow.function.callshow.CallShowDisplayActivity
+import com.epiphany.callshow.function.permission.CheckPermissionActivity
+import com.epiphany.callshow.function.permission.PermissionManager
 import com.epiphany.callshow.function.wallpaper.WallpaperHelper
 import com.epiphany.callshow.model.VideoItemInfo
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -99,6 +103,17 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 return@setOnClickListener
             }
             CallShowDisplayActivity.launchActivity(activity!!, mVideoItemInfo)
+        }
+        binding.tvSettingCallShow.setOnClickListener {
+            if (!EventIntervalUtils.canClick()) {
+                return@setOnClickListener
+            }
+            if (PermissionManager.checkNecessaryPermission(it.context)) {
+//                jumpContactAct()
+            } else {
+                val intent = CheckPermissionActivity.getActIntent(context!!)
+                startActivityForResult(intent, PERMISSION_EXCLUSIVE_REQUEST_CODE)
+            }
         }
     }
 
@@ -347,6 +362,12 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+    }
+
     /**
      * 回收播放器的资源
      */
@@ -379,6 +400,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         private const val EXTRA_VIDEO_INFO = "extra_video_info"
         private const val EXTRA_IS_VIDEO_DETAILS = "extra_is_video_details"
         private const val EXTRA_IS_SHOW_CONTROL_VIEW = "extra_is_show_control_view"
+        private const val PERMISSION_EXCLUSIVE_REQUEST_CODE = 2
         fun newInstance(
             videoInfo: VideoItemInfo,
             isVideoDetails: Boolean = false,

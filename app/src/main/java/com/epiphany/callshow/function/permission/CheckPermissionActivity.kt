@@ -2,6 +2,7 @@ package com.epiphany.callshow.function.permission
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
@@ -48,6 +49,12 @@ class CheckPermissionActivity :
         //去应用详情
         const val REQUEST_TO_APP_DETAIL = 2
 
+        fun getActIntent(cxt: Context): Intent {
+            val intent = Intent(cxt, CheckPermissionActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            return intent
+        }
+
     }
 
     override fun getBindLayout(): Int {
@@ -62,10 +69,10 @@ class CheckPermissionActivity :
 
     override fun initView() {
         binding.recyclerView.adapter = adapter
-      /*  binding.title.setBackListener(View.OnClickListener {
-            finishResult()
-            finish()
-        })*/
+        /*  binding.title.setBackListener(View.OnClickListener {
+              finishResult()
+              finish()
+          })*/
         initObserver()
         //沉浸式
         StatusBarUtil.setTranslucentStatus(this, true)
