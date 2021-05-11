@@ -28,13 +28,12 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
         initLayout()
     }
 
-
     private fun initLayout() {
         binding.llBottomBar.itemIconTintList = null
         binding.llBottomBar.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> setFragmentPosition(TAB_HOME)
-                R.id.my -> setFragmentPosition(TAB_PERSONAL)
+//                R.id.my -> setFragmentPosition(TAB_PERSONAL)
                 R.id.video -> setFragmentPosition(TAB_VIDEO)
             }
             true

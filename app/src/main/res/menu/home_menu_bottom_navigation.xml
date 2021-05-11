@@ -10,8 +10,8 @@
         android:id="@+id/video"
         android:icon="@drawable/ic_home_tab_video"
         android:title="@string/video_title" />
-    <item
+<!--    <item
         android:id="@+id/my"
         android:icon="@drawable/ic_home_tab_my"
-        android:title="@string/my_title" />
+        android:title="@string/my_title" />-->
 </menu>
