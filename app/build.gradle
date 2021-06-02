@@ -21,10 +21,27 @@ android {
         enabled = true
     }
 
+    signingConfigs {
+        callshow {
+            keyAlias = "callshow"
+            keyPassword = "gaozhongkui"
+            storeFile = file("./jks/call_show.jks")
+            storePassword = "gaozhongkui"
+            storeType = "jks"
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.callshow
+            minifyEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.callshow
+            minifyEnabled false
+            debuggable true
         }
     }
 

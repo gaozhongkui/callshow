@@ -21,7 +21,7 @@ class HomePageAdapter(fm: FragmentManager) :
         //判断为空时，则进行创建对象
         if (fragment == null) {
             fragment = VideoListFragment.newInstance(mDataList[position].playListId)
-            mCacheFragments.put(position, fragment)
+            mCacheFragments[position] = fragment
         }
         return fragment
     }
