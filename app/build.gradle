@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'com.chaquo.python'
+
 
 android {
     compileSdkVersion COMPILE_SDKVERSION
@@ -15,6 +17,14 @@ android {
         versionName getVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+        python {
+            pip {
+               /* install "matplotlib"*/
+            }
+        }
     }
 
     dataBinding {
