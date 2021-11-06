@@ -27,6 +27,7 @@ android {
                 install "tqdm==4.62.3"
                 install "pyquery==1.4.3"
                 install "lxml"
+                install "pydantic==1.4"
             }
         }
     }
