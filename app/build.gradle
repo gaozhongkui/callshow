@@ -22,7 +22,11 @@ android {
         }
         python {
             pip {
-               /* install "matplotlib"*/
+                install "js2py==0.71"
+                install "requests==2.24.0"
+                install "tqdm==4.62.3"
+                install "pyquery==1.4.3"
+                install "lxml"
             }
         }
     }
