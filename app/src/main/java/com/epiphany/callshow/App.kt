@@ -1,8 +1,9 @@
 package com.epiphany.callshow
 
 import android.app.Application
+import com.chaquo.python.android.PyApplication
 
-class App : Application() {
+class App : PyApplication() {
     init {
         mApplication = this
     }
