@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.epiphany.call.callshow.PhoneHelper
 import com.epiphany.callshow.R
-import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.common.utils.DownloadHelper
@@ -202,10 +201,10 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     private fun loadVideoRealPath(forciblyQuery: Boolean = false) {
         GlobalScope.launch {
             mVideoItemInfo?.apply {
-                val videoRealInfo = getVideoRealPathStr(videoId, forciblyQuery)
+                val videoRealInfo = //getVideoRealPathStr(videoId, forciblyQuery)
                 withContext(Dispatchers.Main) {
-                    videoUrl = videoRealInfo.videoUrl
-                    audioUrl = videoRealInfo.audioUrl
+                    //videoUrl = videoRealInfo.videoUrl
+                    //audioUrl = videoRealInfo.audioUrl
                     //设置为非加载中的状态
                     isLoadingVideoRealPath.set(false)
                     //判断当前页面不可见时，则直接返回

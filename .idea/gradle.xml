@@ -13,7 +13,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Call" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/jextractor" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

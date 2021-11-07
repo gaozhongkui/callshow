@@ -107,12 +107,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(':jextractor')
-
-    //引入youtube相关的库
-    implementation 'com.google.api-client:google-api-client-android:1.31.4'
-    implementation 'com.google.apis:google-api-services-youtube:v3-rev20210410-1.31.0'
-
     //引入exoPlay库
     implementation 'com.google.android.exoplayer:exoplayer:2.13.3'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.13.3'

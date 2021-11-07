@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.epiphany.callshow.api.ApiClient
-import com.epiphany.callshow.api.VideoHelper
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.constant.DEFAULT_PLAY_LIST_ID
 import com.epiphany.callshow.model.VideoItemInfo
