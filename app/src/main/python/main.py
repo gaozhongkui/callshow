@@ -1,9 +1,9 @@
 from pornhub_api import PornhubApi
 
 
-def search():
+def search(key):
     api = PornhubApi()
-    test = api.search.search("beautiful")
+    test = api.search.search(key)
     return test
 
 
