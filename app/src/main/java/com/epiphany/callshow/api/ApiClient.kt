@@ -2,6 +2,8 @@ package com.epiphany.callshow.api
 
 import android.util.Log
 import com.chaquo.python.Python
+import com.epiphany.callshow.model.PornHubVideoGroupInfo
+import com.epiphany.callshow.model.VideoItemInfo
 
 
 /**
@@ -24,23 +26,25 @@ object ApiClient {
     fun getVideos(playListId: String, nextPageToken: String? = null): VideoResponse? {
         try {
             val data = mModuleObject.callAttr("search", "beautiful")
-            Log.d(TAG, "getVideos() called with: data = $data")
+            val groupInfo = data.toJava(PornHubVideoGroupInfo::class.java)
 
-            val videos = data["videos"]
-            Log.d(TAG, "getVideos() called with: videos.length = ${videos}")
-
-            videos?.let {
-                val resultList = it.toList()
-                Log.d(TAG, "getVideos() called with: resultList = ${resultList.toString()}")
-                it.values.forEach {
-                    Log.d(TAG, "getVideos() called with: it = ${it.toString()}")
-                }
-
-
-                /* videos.values.forEach {
-                     Log.d(TAG, "getVideos() called with: video = ${it}")
-                 }*/
+            val videoList = mutableListOf<VideoItemInfo>()
+            groupInfo.data?.forEach { item ->
+                videoList.add(
+                    VideoItemInfo(
+                        item.video_id,
+                        item.imagePath,
+                        300,
+                        400,
+                        0,
+                        0,
+                        item.title,
+                        item.videoRealPath,
+                        null
+                    )
+                )
             }
+            return VideoResponse(videoList, "")
 
         } catch (e: Exception) {
             Log.w(TAG, "getVideos: ", e)

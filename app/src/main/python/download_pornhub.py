@@ -167,11 +167,11 @@ class PornHub(object):
 def logPrintMsg(path):
      pornhub = PornHub(path)
      urls = json.loads(pornhub.get_video())
-     return urls
+     return urls['quality'][0]['videoUrl']
 
 
 if __name__ == '__main__':
-    pornhub = PornHub("https://www.pornhub.com/view_video.php?viewkey=ph5c66d850c33de")
+    pornhub = PornHub("https://www.pornhub.com/view_video.php?viewkey=ph5f8ef8fb42506")
     urls = json.loads(pornhub.get_video())
     print(urls)
     # pornhub.download("./pornhubs/", urls["title"], urls["quality"][-1]["videoUrl"])
