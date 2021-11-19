@@ -1,4 +1,3 @@
 include ':app'
 rootProject.name = "CallShow"
-include ':jextractor'
 include ':Call'

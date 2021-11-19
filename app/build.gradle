@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
+apply plugin: 'com.chaquo.python'
+
 
 android {
     compileSdkVersion COMPILE_SDKVERSION
@@ -15,6 +17,19 @@ android {
         versionName getVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi-v7a", "arm64-v8a"
+        }
+        python {
+            pip {
+                install "js2py==0.71"
+                install "requests==2.24.0"
+                install "tqdm==4.62.3"
+                install "pyquery==1.4.3"
+                install "lxml"
+                install "pydantic==1.4"
+            }
+        }
     }
 
     dataBinding {
@@ -92,12 +107,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(':jextractor')
-
-    //引入youtube相关的库
-    implementation 'com.google.api-client:google-api-client-android:1.31.4'
-    implementation 'com.google.apis:google-api-services-youtube:v3-rev20210410-1.31.0'
-
     //引入exoPlay库
     implementation 'com.google.android.exoplayer:exoplayer:2.13.3'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.13.3'
@@ -133,3 +142,5 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
 
 }
+
+apply from: 'resource-guard.gradle'

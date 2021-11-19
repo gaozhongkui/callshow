@@ -123,7 +123,7 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
     }
 
     companion object {
-        private const val SPAN_COUNT = 2
+        private const val SPAN_COUNT = 1
 
         private const val EXTRA_PLAY_LIST_ID = "extra_play_list_id"
         fun newInstance(playListId: String): VideoListFragment {
