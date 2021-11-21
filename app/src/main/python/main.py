@@ -5,7 +5,7 @@ import download_pornhub
 
 def search(key, page):
     api = PornhubApi()
-    search = api.search.search(key, page=page)
+    search = api.search.search(key, page=page, thumbsize="large")
     videos = search.videos
     PornHubVideoGroupInfo = jclass("com.epiphany.callshow.model.PornHubVideoGroupInfo")
     PornHubVideoInfo = jclass("com.epiphany.callshow.model.PornHubVideoInfo")
