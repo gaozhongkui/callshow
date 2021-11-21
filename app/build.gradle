@@ -142,3 +142,5 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
 
 }
+
+apply from: 'resource-guard.gradle'
