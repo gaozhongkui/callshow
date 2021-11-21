@@ -171,7 +171,7 @@ def logPrintMsg(path):
 
 
 if __name__ == '__main__':
-    pornhub = PornHub("https://www.pornhub.com/view_video.php?viewkey=ph5f8ef8fb42506")
+    pornhub = PornHub("https://www.pornhub.com/view_video.php?viewkey=ph5f51501da477d")
     urls = json.loads(pornhub.get_video())
     print(urls)
     # pornhub.download("./pornhubs/", urls["title"], urls["quality"][-1]["videoUrl"])

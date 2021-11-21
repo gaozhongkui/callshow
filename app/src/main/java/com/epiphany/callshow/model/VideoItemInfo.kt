@@ -13,5 +13,6 @@ data class VideoItemInfo(
     var likeCount: Long = 0,
     val title: String? = null,
     var videoUrl: String? = null,
-    var audioUrl: String? = null
+    var audioUrl: String? = null,
+    var realVideoUrl: String? = null
 ) : Parcelable

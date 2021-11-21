@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.epiphany.call.callshow.PhoneHelper
 import com.epiphany.callshow.R
+import com.epiphany.callshow.api.VideoHelper.getVideoRealPathStr
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.common.utils.DownloadHelper
@@ -78,7 +79,7 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
                 showPlaceholderView()
                 binding.tvTitle.text = title
                 //判断如果视频的地址为空，则进行加载
-                if (TextUtils.isEmpty(videoUrl)) {
+                if (TextUtils.isEmpty(realVideoUrl)) {
                     isLoadingVideoRealPath.set(true)
                     loadVideoRealPath()
                 } else {
@@ -201,9 +202,9 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
     private fun loadVideoRealPath(forciblyQuery: Boolean = false) {
         GlobalScope.launch {
             mVideoItemInfo?.apply {
-                val videoRealInfo = //getVideoRealPathStr(videoId, forciblyQuery)
+                val videoRealInfo = getVideoRealPathStr(videoUrl!!, forciblyQuery)
                 withContext(Dispatchers.Main) {
-                    //videoUrl = videoRealInfo.videoUrl
+                    realVideoUrl = videoRealInfo.videoUrl
                     //audioUrl = videoRealInfo.audioUrl
                     //设置为非加载中的状态
                     isLoadingVideoRealPath.set(false)
@@ -285,15 +286,15 @@ class VideoFragment : BaseFragment<BaseViewModel, FragmentVideoLayoutBinding>(),
         }
         if (mPlayer == null) {
             binding.playerView.setErrorMessageProvider(PlayerErrorMessageProvider())
-            val videoUri = Uri.parse(mVideoItemInfo?.videoUrl)
-            val audioUri = Uri.parse(mVideoItemInfo?.audioUrl)
+            val videoUri = Uri.parse(mVideoItemInfo?.realVideoUrl)
+            //val audioUri = Uri.parse(mVideoItemInfo?.audioUrl)
             val dataSourceFactory: DataSource.Factory =
                 VideoPlayHelper.getDataSourceFactory(activity!!)
             val videoMediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(MediaItem.fromUri(videoUri))
-            val audioMediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(MediaItem.fromUri(audioUri))
-            val mergingMediaSource = MergingMediaSource(videoMediaSource, audioMediaSource)
+          /*  val audioMediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(MediaItem.fromUri(audioUri))*/
+            val mergingMediaSource = MergingMediaSource(videoMediaSource)//audioMediaSource
             val loopingMediaSource = LoopingMediaSource(mergingMediaSource)
             mPlayer = SimpleExoPlayer.Builder(activity!!).build()
             mPlayer?.apply {

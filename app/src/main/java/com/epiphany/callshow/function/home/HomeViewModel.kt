@@ -25,7 +25,7 @@ class HomeViewModel : BaseViewModel() {
 
         //推荐
         val recommend = HomeTabInfo(
-            "PLIbLfYSA8ACNYCOaDWmj6EA1F1uS-pyVL",
+            "beautiful",
             resources.getString(R.string.tab_recommend)
         )
         dataList.add(recommend)

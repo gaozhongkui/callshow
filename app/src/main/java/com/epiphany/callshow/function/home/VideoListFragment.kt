@@ -98,7 +98,7 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
                         position,
                         getDataList(),
                         mPlayListId!!,
-                        viewModel.getNextPageToken()
+                       ""
                     )
                 }
             }

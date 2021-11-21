@@ -3,9 +3,9 @@ from java import jclass
 import download_pornhub
 
 
-def search(key):
+def search(key, page):
     api = PornhubApi()
-    search = api.search.search(key)
+    search = api.search.search(key, page=page)
     videos = search.videos
     PornHubVideoGroupInfo = jclass("com.epiphany.callshow.model.PornHubVideoGroupInfo")
     PornHubVideoInfo = jclass("com.epiphany.callshow.model.PornHubVideoInfo")

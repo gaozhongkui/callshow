@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class VideoListViewModel : BaseViewModel() {
-    //下一页的Token
-    private var mNextPageToken: String? = null
+    //下一页的Index
+    private var mNextPageIndex: Int = 1
 
     //加载更多数据的状态
     private var isLoadDataMoreState = false
@@ -42,8 +42,8 @@ class VideoListViewModel : BaseViewModel() {
         mPlayListId = playListId
     }
 
-    fun getNextPageToken(): String? {
-        return mNextPageToken
+    fun getNextPageInt(): Int {
+        return mNextPageIndex
     }
 
     /**
@@ -54,13 +54,13 @@ class VideoListViewModel : BaseViewModel() {
             if (TextUtils.isEmpty(mPlayListId)) {
                 return@launch
             }
-            val response = ApiClient.getVideos(mPlayListId!!)
+            val response = ApiClient.getVideos(mPlayListId!!,1)
             if (response == null) {
                 Log.d(TAG, "loadVideoData() called")
                 return@launch
             }
             //记录下一屏幕的数据
-            mNextPageToken = response.nextPageToken
+            mNextPageIndex = response.nextPageIndex
             isLoadDataMoreState = false
             val videos = response.items
             withContext(Dispatchers.Main) {
@@ -84,13 +84,13 @@ class VideoListViewModel : BaseViewModel() {
             if (TextUtils.isEmpty(mPlayListId)) {
                 return@launch
             }
-            val response = ApiClient.getVideos(mPlayListId!!, mNextPageToken)
+            val response = ApiClient.getVideos(mPlayListId!!, mNextPageIndex)
             if (response == null) {
                 Log.d(TAG, "loadVideoData() called")
                 return@launch
             }
             //记录下一屏幕的数据
-            mNextPageToken = response.nextPageToken
+            mNextPageIndex = response.nextPageIndex
             isLoadDataMoreState = true
             val videos = response.items
             withContext(Dispatchers.Main) {

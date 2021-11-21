@@ -23,9 +23,9 @@ object ApiClient {
     /**
      * 获取指定的视频列表
      */
-    fun getVideos(playListId: String, nextPageToken: String? = null): VideoResponse? {
+    fun getVideos(playListId: String, nextPage: Int = 1): VideoResponse? {
         try {
-            val data = mModuleObject.callAttr("search", "beautiful")
+            val data = mModuleObject.callAttr("search", playListId, nextPage)
             val groupInfo = data.toJava(PornHubVideoGroupInfo::class.java)
 
             val videoList = mutableListOf<VideoItemInfo>()
@@ -44,7 +44,7 @@ object ApiClient {
                     )
                 )
             }
-            return VideoResponse(videoList, "")
+            return VideoResponse(videoList, nextPage + 1)
 
         } catch (e: Exception) {
             Log.w(TAG, "getVideos: ", e)

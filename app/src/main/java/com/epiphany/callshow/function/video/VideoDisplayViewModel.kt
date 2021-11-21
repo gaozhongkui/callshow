@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class VideoDisplayViewModel : BaseViewModel() {
     //下一页的Token
-    private var mNextPageToken: String? = null
+    private var mNextPageIndex: Int = 0
 
     //加载更多数据的状态
     private var isLoadDataMoreState = false
@@ -44,7 +44,7 @@ class VideoDisplayViewModel : BaseViewModel() {
                 return@launch
             }
             //记录下一屏幕的数据
-            mNextPageToken = response.nextPageToken
+            mNextPageIndex = response.nextPageIndex
             isLoadDataMoreState = false
             val videos = response.items
             withContext(Dispatchers.Main) {
@@ -66,13 +66,13 @@ class VideoDisplayViewModel : BaseViewModel() {
      */
     fun onLoadMoreVideoData() {
         GlobalScope.launch {
-            val response = ApiClient.getVideos(PLAY_LIST_ID, mNextPageToken)
+            val response = ApiClient.getVideos(PLAY_LIST_ID, mNextPageIndex)
             if (response == null) {
                 Log.d(TAG, "loadVideoData() called")
                 return@launch
             }
             //记录下一屏幕的数据
-            mNextPageToken = response.nextPageToken
+            mNextPageIndex = response.nextPageIndex
             isLoadDataMoreState = true
             val videos = response.items
             withContext(Dispatchers.Main) {
@@ -83,7 +83,7 @@ class VideoDisplayViewModel : BaseViewModel() {
 
 
     companion object {
-        private const val PLAY_LIST_ID = "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn"
+        private const val PLAY_LIST_ID = "beautiful"
         private const val TAG = "HomeViewModel"
     }
 }
