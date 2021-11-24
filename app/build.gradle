@@ -107,13 +107,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    //引入exoPlay库
-    implementation 'com.google.android.exoplayer:exoplayer:2.13.3'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.13.3'
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.13.3'
-    implementation 'com.google.android.exoplayer:extension-cronet:2.13.3'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
@@ -130,13 +123,6 @@ dependencies {
     //smart tab
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
 
-    implementation project(':Call')
-
-    //room
-    def room_version = "2.3.0"
-    implementation "androidx.room:room-runtime:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt("androidx.room:room-compiler:$room_version")
 
     //权限库
     implementation 'pub.devrel:easypermissions:3.0.0'

@@ -8,8 +8,6 @@ import com.epiphany.callshow.common.base.BaseActivity
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.databinding.ActivityMainBinding
 import com.epiphany.callshow.function.home.HomeFragment
-import com.epiphany.callshow.function.personal.PersonalFragment
-import com.epiphany.callshow.function.video.VideoDisplayFragment
 
 class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
     //页面显示的所有Fragment

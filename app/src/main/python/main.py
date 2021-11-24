@@ -1,6 +1,5 @@
 from pornhub_api import PornhubApi
 from java import jclass
-import download_pornhub
 
 
 def search(key, page):
