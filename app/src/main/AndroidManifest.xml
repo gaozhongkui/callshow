@@ -22,6 +22,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".function.main.MainActivity"
+            android:resizeableActivity="false"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +30,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".function.web.FullWebActivity"
+            android:resizeableActivity="false"
+            android:screenOrientation="portrait" />
 
     </application>
 
