@@ -23,9 +23,9 @@
 
         <activity
             android:name=".function.splash.SplashActivity"
+            android:exported="true"
             android:resizeableActivity="false"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,6 +39,8 @@
 
         <activity
             android:name=".function.web.FullWebActivity"
+            android:process=":VideWebView"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
             android:resizeableActivity="false" />
 
         <activity
