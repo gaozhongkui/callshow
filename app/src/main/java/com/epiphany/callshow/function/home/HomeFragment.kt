@@ -6,6 +6,7 @@ import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.utils.StatusBarUtil
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.databinding.FragmentHomeBinding
+import com.epiphany.callshow.function.search.SearchVideoActivity
 
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     private var mHomePageAdapter: HomePageAdapter? = null
@@ -25,6 +26,10 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         mHomePageAdapter = HomePageAdapter(childFragmentManager)
         binding.viewPager.adapter = mHomePageAdapter
         initStatusBarLayout()
+
+        binding.ivSearch.setOnClickListener {
+            SearchVideoActivity.launch(requireContext())
+        }
     }
 
     private fun initDataObserver() {

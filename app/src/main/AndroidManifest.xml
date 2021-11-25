@@ -33,8 +33,14 @@
 
         <activity
             android:name=".function.web.FullWebActivity"
+            android:resizeableActivity="false" />
+
+        <activity
+            android:name=".function.search.SearchVideoActivity"
             android:resizeableActivity="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+
 
     </application>
 
