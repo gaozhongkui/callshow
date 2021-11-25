@@ -18,20 +18,5 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/ll_bottom_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_48"
-            android:background="@android:color/transparent"
-            android:orientation="horizontal"
-            app:elevation="@dimen/dp_0"
-            app:itemIconSize="@dimen/dp_22"
-            app:itemTextColor="@drawable/text_home_tab_title"
-            app:labelVisibilityMode="labeled"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:menu="@menu/home_menu_bottom_navigation" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
