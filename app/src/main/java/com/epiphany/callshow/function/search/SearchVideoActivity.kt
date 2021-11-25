@@ -38,7 +38,7 @@ class SearchVideoActivity : BaseActivity<SearchVideoViewModel, ActivitySearchVid
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         //监听搜索按键
-        if (keyCode == KeyEvent.KEYCODE_SEARCH) {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
             showSearchContentFragment()
         }
         return super.onKeyUp(keyCode, event)

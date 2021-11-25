@@ -5,9 +5,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <WebView
+        <com.epiphany.callshow.function.web.VideoWebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <FrameLayout
+            android:id="@+id/framelayout_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </FrameLayout>
 </layout>

@@ -39,9 +39,10 @@
 
         <activity
             android:name=".function.web.FullWebActivity"
-            android:process=":VideWebView"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-            android:resizeableActivity="false" />
+            android:process=":VideWebView"
+            android:resizeableActivity="false"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".function.search.SearchVideoActivity"
