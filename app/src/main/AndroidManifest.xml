@@ -20,16 +20,22 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name=".function.main.MainActivity"
+            android:name=".function.splash.SplashActivity"
             android:resizeableActivity="false"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".function.main.MainActivity"
+            android:resizeableActivity="false"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".function.web.FullWebActivity"
