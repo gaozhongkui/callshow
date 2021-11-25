@@ -2,46 +2,51 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <LinearLayout
+            android:id="@+id/tool_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_48">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.google.android.material.appbar.AppBarLayout
-                android:id="@+id/appbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fadingEdge="none"
-                android:theme="@style/ThemeOverlay.AppCompat.Light"
-                app:elevation="@dimen/dp_0">
+            <com.ogaclejapan.smarttablayout.SmartTabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_44"
+                android:layout_weight="1"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:stl_defaultTabTextAllCaps="false"
+                app:stl_defaultTabTextColor="@drawable/text_home_top_tab_title"
+                app:stl_defaultTabTextSize="@dimen/sp_14"
+                app:stl_dividerThickness="@dimen/dp_0"
+                app:stl_drawDecorationAfterTab="false"
+                app:stl_indicatorColor="@color/theme_color"
+                app:stl_indicatorCornerRadius="@dimen/dp_6"
+                app:stl_indicatorInterpolation="linear"
+                app:stl_indicatorThickness="@dimen/dp_3"
+                app:stl_underlineThickness="@dimen/dp_0" />
 
-                <com.ogaclejapan.smarttablayout.SmartTabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_36"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    app:stl_defaultTabTextAllCaps="false"
-                    app:stl_defaultTabTextColor="@drawable/text_home_top_tab_title"
-                    app:stl_defaultTabTextSize="@dimen/sp_14"
-                    app:stl_dividerThickness="@dimen/dp_0"
-                    app:stl_drawDecorationAfterTab="false"
-                    app:stl_indicatorColor="@color/theme_color"
-                    app:stl_indicatorCornerRadius="@dimen/dp_6"
-                    app:stl_indicatorInterpolation="linear"
-                    app:stl_indicatorThickness="@dimen/dp_3"
-                    app:stl_underlineThickness="@dimen/dp_0" />
-            </com.google.android.material.appbar.AppBarLayout>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/iv_search"
+                android:layout_width="@dimen/dp_44"
+                android:layout_height="@dimen/dp_44"
+                android:layout_marginStart="@dimen/dp_2"
+                android:layout_marginEnd="@dimen/dp_6"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingBottom="@dimen/dp_2"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="anim/searchask_loop.json"
+                app:lottie_loop="true" />
+        </LinearLayout>
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-    </FrameLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </layout>
