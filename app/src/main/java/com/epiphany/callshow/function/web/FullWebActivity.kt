@@ -28,6 +28,18 @@ class FullWebActivity : BaseActivity<BaseViewModel, ActivityFullWebLayoutBinding
         }
         binding.webView.setIgnoreSslError(true)
         binding.webView.setOnVideoWebViewListener(VideoWebViewListenerImp())
+        binding.webView.setIPageLoadListener(object : IPageLoadListener {
+            override fun onPageStarted(url: String?) {
+                binding.loadingView.visibility = View.VISIBLE
+                binding.loadingView.playAnimation()
+            }
+
+            override fun onPageFinished(url: String?) {
+                binding.loadingView.visibility = View.GONE
+                binding.loadingView.pauseAnimation()
+            }
+
+        })
     }
 
     /**

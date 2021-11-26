@@ -13,6 +13,7 @@ import android.webkit.WebView
 import android.webkit.WebResourceRequest
 import android.os.Build
 import android.annotation.TargetApi
+import android.graphics.Bitmap
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient.CustomViewCallback
@@ -28,9 +29,10 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
 
     private var mIgnoreSslError = false //是否忽略ssl证书错误
 
-
-    override fun init() {
-        super.init()
+    //页面加载的事件监听
+    private var mIPageLoadListener: IPageLoadListener? = null
+    override fun initLayout() {
+        super.initLayout()
         this.webViewClient = CustomWebClient()
         this.webChromeClient = CustomWebChromClient()
         addJavascriptInterface(VideoJsObject(), "onClickFullScreenBtn")
@@ -38,6 +40,10 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
 
     override fun webSettingsImp(webSettings: WebSettings?) {
         super.webSettingsImp(webSettings)
+    }
+
+    fun setIPageLoadListener(pageLoadListener: IPageLoadListener) {
+        mIPageLoadListener = pageLoadListener
     }
 
     /**
@@ -82,8 +88,14 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
             }
         }
 
+        override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+            super.onPageStarted(view, url, favicon)
+            mIPageLoadListener?.onPageStarted(url)
+        }
+
         override fun onPageFinished(view: WebView, url: String) {
             super.onPageFinished(view, url)
+            mIPageLoadListener?.onPageFinished(url)
             //页面加载完成的时候，注入js
             val js = getJs(url)
             view.loadUrl(js)
@@ -221,6 +233,7 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
      */
     override fun onDestory() {
         super.onDestory()
+        mIPageLoadListener = null
         mOnVideoWebViewListener = null
         mCallback = null
         stopLoading()
@@ -233,4 +246,10 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
         removeAllViews()
         destroy()
     }
+}
+
+interface IPageLoadListener {
+    fun onPageStarted(url: String?)
+
+    fun onPageFinished(url: String?)
 }

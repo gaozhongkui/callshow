@@ -10,9 +10,9 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
     private var mSettings: WebSettings? = null
 
     init {
-        init()
+        initLayout()
     }
-    protected open fun init() {
+    protected open fun initLayout() {
         webSetting()
     }
 
@@ -38,7 +38,7 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
             // 缩放比例 1
             setInitialScale(1)
             // 告诉WebView启用JavaScript执行。默认的是false。
-            it.setJavaScriptEnabled(true)
+            it.javaScriptEnabled = true
             //  页面加载好以后，再放开图片
             //it.setBlockNetworkImage(false);
             // 使用localStorage则必须打开
@@ -48,7 +48,7 @@ open class BaseWebView(context: Context, attrs: AttributeSet?) : WebView(context
             // WebView是否支持多个窗口。
             it.setSupportMultipleWindows(true)
             // webview从5.0开始默认不允许混合模式,https中不能加载http资源,需要设置开启。
-            it.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW)
+            it.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             // 设置字体默认缩放大小(改变网页字体大小,setTextSize  api14被弃用)
             //it.setTextZoom(100);
             it.databaseEnabled = true
