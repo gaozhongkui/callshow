@@ -36,8 +36,8 @@ object ApiClient {
                         item.imagePath,
                         300,
                         400,
+                        Random.nextLong(1000000),
                         Random.nextLong(10000000),
-                        Random.nextLong(100000),
                         item.title,
                         item.videoRealPath,
                         null
