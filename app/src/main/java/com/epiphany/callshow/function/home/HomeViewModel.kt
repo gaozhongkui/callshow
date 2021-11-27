@@ -32,42 +32,42 @@ class HomeViewModel : BaseViewModel() {
 
         //炫酷
         val cool = HomeTabInfo(
-            "PLj6XzcqwRpN73wfRp1w7j_PK2OLrbsR-A",
+            "Cool",
             resources.getString(R.string.tab_cool)
         )
         dataList.add(cool)
 
         //美女
         val beauty = HomeTabInfo(
-            "PLbduwZ5ABnEmprn8d5OdIjUZwZnWsXjrn",
+            "beauty",
             resources.getString(R.string.tab_beauty)
         )
         dataList.add(beauty)
 
         //帅哥
         val handsome_guy = HomeTabInfo(
-            "PLgjZiTE-Q9SJZRivhaB6HQLeLmYMSgZEH",
+            "Phandsome guy",
             resources.getString(R.string.tab_handsome_guy)
         )
         dataList.add(handsome_guy)
 
         //卡通
         val cartoons = HomeTabInfo(
-            "PLgjZiTE-Q9SI71HKolVdpMdjo7F6oXAsL",
+            "Cartoon",
             resources.getString(R.string.tab_cartoons)
         )
         dataList.add(cartoons)
 
-        //风景
+        //野外
         val landscape = HomeTabInfo(
-            "PLgjZiTE-Q9SI7D44Bfp1Kv0gatv7nQZuy",
+            "open country",
             resources.getString(R.string.tab_landscape)
         )
         dataList.add(landscape)
 
-        //搞笑
+        //学生
         val funny = HomeTabInfo(
-            "PLgjZiTE-Q9SLjtSl3u0ApQ1Lk6a2reDbu",
+            "student",
             resources.getString(R.string.tab_funny)
         )
         dataList.add(funny)

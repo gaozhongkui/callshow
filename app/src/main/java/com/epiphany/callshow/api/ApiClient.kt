@@ -4,6 +4,7 @@ import android.util.Log
 import com.chaquo.python.Python
 import com.epiphany.callshow.model.PornHubVideoGroupInfo
 import com.epiphany.callshow.model.VideoItemInfo
+import kotlin.random.Random
 
 
 /**
@@ -11,7 +12,6 @@ import com.epiphany.callshow.model.VideoItemInfo
  */
 object ApiClient {
     private const val TAG = "ApiClient"
-
     private val py by lazy {
         Python.getInstance()
     }
@@ -36,8 +36,8 @@ object ApiClient {
                         item.imagePath,
                         300,
                         400,
-                        0,
-                        0,
+                        Random.nextLong(10000000),
+                        Random.nextLong(100000),
                         item.title,
                         item.videoRealPath,
                         null
