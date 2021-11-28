@@ -39,6 +39,16 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
         this.webViewClient = CustomWebClient()
         this.webChromeClient = CustomWebChromClient()
         addJavascriptInterface(VideoJsObject(), "onClickFullScreenBtn")
+
+        setOnTouchListener(object : OnTouchListener {
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                event?.let {
+                    Log.d("gaozhongkui", "onTouch() called${it.rawX}  ${it.rawY}")
+                }
+                return false
+            }
+
+        })
     }
 
     override fun webSettingsImp(webSettings: WebSettings?) {
@@ -126,7 +136,14 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
             //页面加载完成的时候，注入js
             val js = getJs(url)
             view.loadUrl(js)
-            view.loadUrl("javascript:onClickFullScreenBtn.fullButLocation(document.getElementsByClassName('mgp_btn mgp_maximize mgp_icon mgp_icon-fullscreen')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('mgp_btn mgp_maximize mgp_icon mgp_icon-fullscreen')[0].getBoundingClientRect().y/window.innerHeight)")
+            val playTag = "mgp_pause"
+            val fullScreenTag = "mgp_btn mgp_maximize mgp_icon mgp_icon-fullscreen"
+            view.loadUrl("javascript:onClickFullScreenBtn.playButLocation(document.getElementsByClassName('$playTag')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('$playTag')[0].getBoundingClientRect().y/window.innerHeight)")
+           //延迟100ms 进行全屏
+            postDelayed(
+                { view.loadUrl("javascript:onClickFullScreenBtn.fullButLocation(document.getElementsByClassName('$fullScreenTag')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('$fullScreenTag')[0].getBoundingClientRect().y/window.innerHeight)") },
+                100
+            )
         }
 
         /**
@@ -201,6 +218,17 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
         @JavascriptInterface
         fun fullButLocation(sx: Float, sy: Float) {
             Log.d("gaozhongkui", "fullButLocation() called with: sx = $sx, sy = $sy")
+            post {
+                simulateTouchEvent(this@VideoWebView, width * sx, height * sy)
+            }
+        }
+
+        @JavascriptInterface
+        fun playButLocation(sx: Float, sy: Float) {
+            Log.d(
+                "gaozhongkui",
+                "playButLocation() called with: sx = $sx, sy = $sy   ${width * sx}  ${height * sy}"
+            )
             post {
                 simulateTouchEvent(this@VideoWebView, width * sx, height * sy)
             }
