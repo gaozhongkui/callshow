@@ -15,6 +15,9 @@ import android.os.Build
 import android.annotation.TargetApi
 import android.graphics.Bitmap
 import android.net.http.SslError
+import android.os.SystemClock
+import android.util.Log
+import android.view.MotionEvent
 import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebViewClient
@@ -44,6 +47,30 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
 
     fun setIPageLoadListener(pageLoadListener: IPageLoadListener) {
         mIPageLoadListener = pageLoadListener
+    }
+
+    /**
+     * 模拟点击
+     */
+    private fun simulateTouchEvent(view: View, x: Float, y: Float) {
+        val downTime = SystemClock.uptimeMillis()
+        val eventTime = SystemClock.uptimeMillis() + 100
+        val metaState = 0
+        val motionEvent = MotionEvent.obtain(
+            downTime, eventTime,
+            MotionEvent.ACTION_DOWN, x, y, metaState
+        )
+        view.dispatchTouchEvent(motionEvent)
+        val motionMoveEvent = MotionEvent.obtain(
+            downTime, eventTime,
+            MotionEvent.ACTION_MOVE, x, y, metaState
+        )
+        view.dispatchTouchEvent(motionMoveEvent)
+        val upEvent = MotionEvent.obtain(
+            downTime + 1000, eventTime + 1000,
+            MotionEvent.ACTION_UP, x, y, metaState
+        )
+        view.dispatchTouchEvent(upEvent)
     }
 
     /**
@@ -99,6 +126,7 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
             //页面加载完成的时候，注入js
             val js = getJs(url)
             view.loadUrl(js)
+            view.loadUrl("javascript:onClickFullScreenBtn.fullButLocation(document.getElementsByClassName('mgp_btn mgp_maximize mgp_icon mgp_icon-fullscreen')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('mgp_btn mgp_maximize mgp_icon mgp_icon-fullscreen')[0].getBoundingClientRect().y/window.innerHeight)")
         }
 
         /**
@@ -167,6 +195,14 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
                     mOnVideoWebViewListener?.onJsEnterFullSceenMode()
                 }
                 mFullScreenMode = !mFullScreenMode //重置全屏状态
+            }
+        }
+
+        @JavascriptInterface
+        fun fullButLocation(sx: Float, sy: Float) {
+            Log.d("gaozhongkui", "fullButLocation() called with: sx = $sx, sy = $sy")
+            post {
+                simulateTouchEvent(this@VideoWebView, width * sx, height * sy)
             }
         }
     }
