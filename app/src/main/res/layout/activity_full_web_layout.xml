@@ -3,12 +3,19 @@
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#101010">
 
         <com.epiphany.callshow.function.web.VideoWebView
             android:id="@+id/web_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <View
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_48"
+            android:background="#101010" />
 
         <FrameLayout
             android:id="@+id/framelayout_container"
@@ -17,12 +24,12 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_view"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
             android:layout_gravity="center"
             android:visibility="visible"
             app:lottie_autoPlay="true"
-            app:lottie_fileName="anim/progressloading.json"
+            app:lottie_fileName="anim/video_loading.json"
             app:lottie_loop="true" />
     </FrameLayout>
 </layout>

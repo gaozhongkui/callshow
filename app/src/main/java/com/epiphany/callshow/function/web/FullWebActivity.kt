@@ -46,6 +46,7 @@ class FullWebActivity : BaseActivity<BaseViewModel, ActivityFullWebLayoutBinding
      * 设置横屏
      */
     private fun setLandscape() {
+        binding.toolBar.visibility = View.GONE
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
@@ -55,9 +56,11 @@ class FullWebActivity : BaseActivity<BaseViewModel, ActivityFullWebLayoutBinding
      * 设置竖屏
      */
     private fun setPortrait() {
+        binding.toolBar.visibility = View.GONE
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
+        onBackPressed()
     }
 
     /**
