@@ -76,6 +76,20 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
+
+    android.applicationVariants.all {variant ->
+        variant.outputs.all {
+            //在这里修改apk文件名，引号内的字符串都可以随便定义
+            outputFileName = "Me_Hub_V${getVersionName()}_${buildTime()}.apk"
+        }
+    }
+
+}
+
+def buildTime(){
+    def date = new Date()
+    def formattedDate = date.format('yyyyMMddHHmm')
+    return formattedDate
 }
 
 def getVersionName = { ->
