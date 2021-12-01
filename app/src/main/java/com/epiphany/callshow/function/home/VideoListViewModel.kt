@@ -4,7 +4,7 @@ import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.epiphany.callshow.api.ApiClient
+import com.epiphany.callshow.api.APiClientManager
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.model.VideoItemInfo
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class VideoListViewModel : BaseViewModel() {
     //下一页的Index
-    private var mNextPageIndex: Int = 1
+    private var mNextPageIndex: Any? = null
 
     //加载更多数据的状态
     private var isLoadDataMoreState = false
@@ -42,10 +42,6 @@ class VideoListViewModel : BaseViewModel() {
         mPlayListId = playListId
     }
 
-    fun getNextPageInt(): Int {
-        return mNextPageIndex
-    }
-
     /**
      * 加载视频数据
      */
@@ -54,7 +50,7 @@ class VideoListViewModel : BaseViewModel() {
             if (TextUtils.isEmpty(mPlayListId)) {
                 return@launch
             }
-            val response = ApiClient.getVideos(mPlayListId!!,1)
+            val response = APiClientManager.getVideos(mPlayListId!!, mNextPageIndex)
             if (response == null) {
                 Log.d(TAG, "loadVideoData() called")
                 return@launch
@@ -84,7 +80,7 @@ class VideoListViewModel : BaseViewModel() {
             if (TextUtils.isEmpty(mPlayListId)) {
                 return@launch
             }
-            val response = ApiClient.getVideos(mPlayListId!!, mNextPageIndex)
+            val response = APiClientManager.getVideos(mPlayListId!!, mNextPageIndex)
             if (response == null) {
                 Log.d(TAG, "loadVideoData() called")
                 return@launch

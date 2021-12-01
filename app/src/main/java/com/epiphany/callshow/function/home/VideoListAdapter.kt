@@ -79,7 +79,10 @@ class VideoListAdapter(cxt: Context) : RecyclerView.Adapter<VideoListAdapter.Nor
             binding.tvDownloadNums.text = CommonUtil.formatCount(info.viewCount)
 
             //计算宽高比
-            val dimensionRatio = info.width.toFloat() / info.high.toFloat()
+            var dimensionRatio = info.width.toFloat() / info.high.toFloat()
+            if (dimensionRatio > .6f) {
+                dimensionRatio = 0.6f
+            }
             //设置布局的旷告比
             val layoutParams = binding.ivImg.layoutParams as ConstraintLayout.LayoutParams
             layoutParams.dimensionRatio = "1:$dimensionRatio"

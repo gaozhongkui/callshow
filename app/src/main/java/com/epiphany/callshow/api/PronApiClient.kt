@@ -10,7 +10,7 @@ import kotlin.random.Random
 /**
  * 此类用于承载所有的网络请求的入口
  */
-object ApiClient {
+object PronApiClient {
     private const val TAG = "ApiClient"
     private val py by lazy {
         Python.getInstance()

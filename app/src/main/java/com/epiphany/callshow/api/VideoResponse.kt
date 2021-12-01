@@ -5,4 +5,4 @@ import com.epiphany.callshow.model.VideoItemInfo
 /**
  * 视频请求对象体
  */
-data class VideoResponse(val items: List<VideoItemInfo>, val nextPageIndex: Int = 1)
+data class VideoResponse(val items: List<VideoItemInfo>, val nextPageIndex: Any? = null)
