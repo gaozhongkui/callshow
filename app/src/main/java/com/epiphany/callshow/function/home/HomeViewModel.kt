@@ -77,7 +77,7 @@ class HomeViewModel : BaseViewModel() {
         } else {
             //推荐
             val recommend = HomeTabInfo(
-                "PLIbLfYSA8ACNYCOaDWmj6EA1F1uS-pyVL",
+                "PLgjZiTE-Q9SIOTDaklalyEN6MVTIeMfNe",
                 resources.getString(R.string.tab_recommend)
             )
             dataList.add(recommend)

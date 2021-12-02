@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.epiphany.callshow.R
+import com.epiphany.callshow.api.APiClientManager
 import com.epiphany.callshow.common.base.BaseFragment
 import com.epiphany.callshow.common.utils.SystemInfo
 import com.epiphany.callshow.constant.DEFAULT_PLAY_LIST_ID
@@ -93,7 +94,15 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
                     return
                 }
                 mVideoAdapter?.apply {
-                    FullWebActivity.launchAct(requireActivity(), getDataList()[position].videoUrl)
+                    if (APiClientManager.VIDEO_PLAY_MODE == APiClientManager.VideoType.YouTuBe) {
+
+                    } else {
+                        FullWebActivity.launchAct(
+                            requireActivity(),
+                            getDataList()[position].videoUrl
+                        )
+                    }
+
                 }
             }
 
