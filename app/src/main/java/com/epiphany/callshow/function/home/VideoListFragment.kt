@@ -95,7 +95,10 @@ class VideoListFragment : BaseFragment<VideoListViewModel, FragmentVideoListLayo
                 }
                 mVideoAdapter?.apply {
                     if (APiClientManager.VIDEO_PLAY_MODE == APiClientManager.VideoType.YouTuBe) {
-
+                        FullWebActivity.launchAct(
+                            requireActivity(),
+                            "https://m.youtube.com/watch?v=${getDataList()[position].videoId}"
+                        )
                     } else {
                         FullWebActivity.launchAct(
                             requireActivity(),

@@ -22,6 +22,7 @@ import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebViewClient
 import android.webkit.WebSettings
+import com.epiphany.callshow.api.APiClientManager
 import com.epiphany.callshow.function.web.TagUtils.getJs
 
 
@@ -136,13 +137,33 @@ class VideoWebView(context: Context, attrs: AttributeSet?) : BaseWebView(context
             //页面加载完成的时候，注入js
             val js = getJs(url)
             view.loadUrl(js)
-            val playTag = "mgp_pause"
-            val fullScreenTag = "mgp_btn mgp_maximize mgp_icon mgp_icon-fullscreen"
-            view.loadUrl("javascript:onClickFullScreenBtn.playButLocation(document.getElementsByClassName('$playTag')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('$playTag')[0].getBoundingClientRect().y/window.innerHeight)")
-           //延迟100ms 进行全屏
+            var fullScreenTag = "mgp_btn mgp_maximize mgp_icon mgp_icon-fullscreen"
+            //判断如果不等于youtube,执行自动播放
+            if (APiClientManager.VIDEO_PLAY_MODE != APiClientManager.VideoType.YouTuBe) {
+                val playTag = "mgp_pause"
+                view.loadUrl("javascript:onClickFullScreenBtn.playButLocation(document.getElementsByClassName('$playTag')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('$playTag')[0].getBoundingClientRect().y/window.innerHeight)")
+            } else {
+                fullScreenTag = "icon-button fullscreen-icon"
+            }
+            //延迟100ms 进行全屏
             postDelayed(
-                { view.loadUrl("javascript:onClickFullScreenBtn.fullButLocation(document.getElementsByClassName('$fullScreenTag')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('$fullScreenTag')[0].getBoundingClientRect().y/window.innerHeight)") },
-                100
+                {
+                    //判断是否为YouTuBe
+                    if (APiClientManager.VIDEO_PLAY_MODE == APiClientManager.VideoType.YouTuBe) {
+                        //先模拟点击一下，才能获取对象
+                        simulateTouchEvent(this@VideoWebView, width * .5f, height * .2f)
+                        view.loadUrl("javascript:document.getElementsByClassName('$fullScreenTag')[0].click()")
+                    } else {
+                        view.loadUrl("javascript:onClickFullScreenBtn.fullButLocation(document.getElementsByClassName('$fullScreenTag')[0].getBoundingClientRect().x/window.innerWidth,document.getElementsByClassName('$fullScreenTag')[0].getBoundingClientRect().y/window.innerHeight)")
+                    }
+                },
+                kotlin.run {
+                    if (APiClientManager.VIDEO_PLAY_MODE == APiClientManager.VideoType.YouTuBe) {
+                        1000
+                    } else {
+                        100
+                    }
+                }
             )
         }
 
