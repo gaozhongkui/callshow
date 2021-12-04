@@ -14,7 +14,7 @@ android {
         minSdkVersion MINSDK_VERSION
         targetSdkVersion TARGETSDK_VERSION
         versionCode 1
-        versionName getVersionName()
+        versionName "1.0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         ndk {
@@ -80,7 +80,7 @@ android {
     android.applicationVariants.all {variant ->
         variant.outputs.all {
             //在这里修改apk文件名，引号内的字符串都可以随便定义
-            outputFileName = "Me_Hub_V${getVersionName()}_${buildTime()}.apk"
+            outputFileName = "Me_Hub_V${defaultConfig.versionCode}_${defaultConfig.versionName}_${buildTime()}.apk"
         }
     }
 
@@ -90,22 +90,6 @@ def buildTime(){
     def date = new Date()
     def formattedDate = date.format('yyyyMMddHHmm')
     return formattedDate
-}
-
-def getVersionName = { ->
-    try {
-        def stdout = new ByteArrayOutputStream()
-        exec {
-            commandLine 'git', 'rev-list', 'HEAD', '--count'
-            standardOutput = stdout
-        }
-        def retVersionName = Integer.parseInt(stdout.toString().trim()) + 3000
-        return '1.0.' + retVersionName
-    }
-    catch (ignored) {
-        ignored.printStackTrace()
-        return null
-    }
 }
 
 dependencies {
