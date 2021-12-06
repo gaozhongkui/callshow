@@ -3,6 +3,7 @@ package com.epiphany.callshow.api
 import android.content.Context
 import android.content.SharedPreferences
 import com.epiphany.callshow.App
+import com.epiphany.callshow.R
 
 /**
  * 请求用于YouTube API KEY的辅助类
@@ -12,17 +13,19 @@ object YouTuBeAPIKeyHelper {
     private const val KEY_CURRENT_API_KEY = "key_current_api_key"
 
     //备用的API KEY 用于YouTube
-    private val mSpareApiKeyList = listOf("AIzaSyCOixs9H_34-tt3cg8AxpO2NyTO0eqfX_o")
+    private val mKList = listOf(
+        App.getApp().resources.getString(R.string.y_key_1) + App.getApp().resources.getString(R.string.y_key_2)
+    )
 
     /**
      * 获取可用的API KEY
      */
     fun getAPIKey(): String {
-        val value = getSharePre().getString(KEY_CURRENT_API_KEY, mSpareApiKeyList[0])
+        val value = getSharePre().getString(KEY_CURRENT_API_KEY, mKList[0])
         value?.apply {
             return this
         }
-        return mSpareApiKeyList[0]
+        return mKList[0]
     }
 
     /**
