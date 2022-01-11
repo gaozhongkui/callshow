@@ -1,16 +1,11 @@
 package com.epiphany.callshow.api
 
-import android.os.SystemClock
 import android.text.TextUtils
 import android.util.Log
-import com.epiphany.callshow.App
-import com.epiphany.callshow.BuildConfig
-import com.epiphany.callshow.common.utils.SystemInfo
+import com.chaquo.python.Python
 import com.epiphany.callshow.model.VideoItemInfo
-import com.google.api.client.googleapis.json.GoogleJsonResponseException
-import com.google.api.services.youtube.YouTube
-import java.io.IOException
-import java.lang.Exception
+import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.random.Random
 
 /**
@@ -19,126 +14,68 @@ import kotlin.random.Random
 object YouTuBeApiClient {
     private const val TAG = "ApiClient"
 
-    //分页最大返回数
-    private const val NUMBER_OF_VIDEOS_RETURNED: Long = 50
+    private val py by lazy {
+        Python.getInstance()
+    }
+
+    private val mModuleObject by lazy {
+        py.getModule("main")
+    }
 
     /**
      * 获取指定的视频列表
      */
-    fun getVideos(playListId: String, nextPageToken: String? = null): VideoResponse? {
-        val youtube = YouTube.Builder(
-            YouTuBeAuth.HTTP_TRANSPORT, YouTuBeAuth.JSON_FACTORY
-        ) {}.setApplicationName(BuildConfig.APPLICATION_ID).build()
-
-        val search = try {
-            youtube.playlistItems().list(mutableListOf("id,snippet"))
-        } catch (e: IOException) {
-            null
-        }
-        search?.let {
-            search.key = YouTuBeAPIKeyHelper.getAPIKey()
-            search.maxResults = NUMBER_OF_VIDEOS_RETURNED
-            search.fields =
-                "items(snippet/title,snippet/thumbnails,snippet/resourceId/videoId),nextPageToken,pageInfo,prevPageToken"
-            search.playlistId = playListId
-            search.pageToken = nextPageToken
-            val searchResponse = try {
-                search.execute()
-            } catch (e: Exception) {
-                //判断是否为账号错误的问题
-                if (e is GoogleJsonResponseException) {
-                    //youtube api 配额用尽，尝试替换api key
-                    if (403 == e.details.code) {
-                        //切换下一个有用的API Key
-                        YouTuBeAPIKeyHelper.switchNextEnableAPIKey()
-                        //重新调用
-                        return getVideos(playListId, nextPageToken)
-                    }
-                } else {
-                    if (!SystemInfo.checkConnectivity(App.getApp())) {
-                        return null
-                    }
-                    //延迟一下，继续请求
-                    SystemClock.sleep(1000)
-                    return getVideos(playListId, nextPageToken)
-                }
-
-                null
+    fun getVideos(playListId: String, nextPageToken: Int = 0): VideoResponse? {
+        try {
+            val data = mModuleObject.callAttr("ybsearch", playListId)
+            Log.d(
+                TAG, "getVideos() called with: data = $data"
+            )
+            val jsonDataStr = data.toString()
+            //判断如果数据为空时，则直接返回
+            if (TextUtils.isEmpty(jsonDataStr)) {
+                return null
             }
-            Log.d(TAG, "getVideos() called $searchResponse")
+            val jsonRoot = JSONObject(jsonDataStr)
+            val jsonArray = jsonRoot.getJSONArray("videos")
 
-            searchResponse?.apply {
-                //转换数据格式
-                val videos = YouTuBeVideoHelper.convertPlaylistItemToVideoInfo(items)
-                val videoResponse = VideoResponse(videos, nextPageToken)
-                //填充视频详情
-                fillVideoDetails(videos)
-                return videoResponse
+            val videoList = mutableListOf<VideoItemInfo>()
+            //遍历数据列表
+            for (index in 0 until jsonArray.length()) {
+                val itemObject = jsonArray.getJSONObject(index)
+                val videoId = itemObject.optString("id")
+                val previewPng = getVideoPreviewPng(itemObject.getJSONArray("thumbnails"))
+                val title = itemObject.optString("title")
+                videoList.add(
+                    VideoItemInfo(
+                        videoId,
+                        previewPng,
+                        300,
+                        400,
+                        Random.nextLong(1000000),
+                        Random.nextLong(10000000),
+                        title,
+                        videoId,
+                        null
+                    )
+                )
             }
+            return VideoResponse(videoList)
 
-
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         return null
     }
 
-
     /**
-     * 填充视频详情
+     * 获取视频的预览图
      */
-    private fun fillVideoDetails(list: List<VideoItemInfo>) {
-        val youtube = YouTube.Builder(
-            YouTuBeAuth.HTTP_TRANSPORT, YouTuBeAuth.JSON_FACTORY
-        ) {}.setApplicationName(BuildConfig.APPLICATION_ID).build()
-        val search = try {
-            youtube.videos().list(mutableListOf("id,statistics"))
-        } catch (e: IOException) {
-            null
+    private fun getVideoPreviewPng(jsonArray: JSONArray): String {
+        if (jsonArray.length() == 0) {
+            return ""
         }
-        search?.let {
-            search.fields = "items(id,statistics)"
-            search.key = YouTuBeAPIKeyHelper.getAPIKey()
-            search.maxResults = NUMBER_OF_VIDEOS_RETURNED
-            search.id = getVideoIdsByVideoItemInfo(list)
-            val searchResponse = try {
-                search.execute()
-            } catch (e: Exception) {
-                null
-            }
-            searchResponse?.apply {
-                for (item in items) {
-                    for (itemInfo in list) {
-                        //判断两个Video Id相同时，则进行处理
-                        if (TextUtils.equals(itemInfo.videoId, item.id)) {
-                            item.statistics?.apply {
-                                itemInfo.viewCount =
-                                    if (viewCount != null) viewCount.toLong() else getRandomCount()
-                                itemInfo.likeCount =
-                                    if (likeCount != null) likeCount.toLong() else getRandomCount()
-                            }
-                            break
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * 获取视频的ID
-     */
-    private fun getVideoIdsByVideoItemInfo(list: List<VideoItemInfo>): List<String> {
-        val videoIds = mutableListOf<String>()
-        for (itemInfo in list) {
-            videoIds.add(itemInfo.videoId)
-        }
-        return videoIds
-    }
-
-    /**
-     * 获取随机数
-     */
-    private fun getRandomCount(): Long {
-        return 6000 + Random.nextLong(6000)
+        return jsonArray.optString(jsonArray.length() - 1)
     }
 
 

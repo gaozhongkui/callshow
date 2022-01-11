@@ -1,5 +1,6 @@
 from pornhub_api import PornhubApi
 from java import jclass
+from youtube_search import YoutubeSearch
 
 
 def search(key, page):
@@ -22,3 +23,8 @@ def search(key, page):
         groupInfo.addItem(info)
 
     return groupInfo
+
+def ybsearch(key):
+    sySearch = YoutubeSearch(key, max_results=1000)
+    json_output = sySearch.to_json(clear_cache=False)
+    return json_output

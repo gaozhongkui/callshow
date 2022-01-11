@@ -7,21 +7,12 @@ object APiClientManager {
     /**
      * 获取指定的视频列表
      */
-    fun getVideos(playListId: String, nextPageToken: Any? = null): VideoResponse? {
+    fun getVideos(playListId: String, nextPageToken: Int = 1): VideoResponse? {
         return if (VIDEO_PLAY_MODE == VideoType.PornHub) {
-            PronApiClient.getVideos(playListId, kotlin.run {
-                if (nextPageToken is Int) nextPageToken else 1
-            })
+            PronApiClient.getVideos(playListId, nextPageToken)
         } else {
-            YouTuBeApiClient.getVideos(playListId, kotlin.run {
-                if (nextPageToken is String) {
-                    nextPageToken
-                } else {
-                    null
-                }
-            })
+            YouTuBeApiClient.getVideos(playListId, nextPageToken)
         }
-
     }
 
     enum class VideoType {
