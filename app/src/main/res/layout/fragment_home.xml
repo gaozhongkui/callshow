@@ -16,7 +16,7 @@
             <com.ogaclejapan.smarttablayout.SmartTabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_44"
+                android:layout_height="@dimen/dp_52"
                 android:layout_weight="1"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:stl_defaultTabTextAllCaps="false"
@@ -24,7 +24,7 @@
                 app:stl_defaultTabTextSize="@dimen/sp_14"
                 app:stl_dividerThickness="@dimen/dp_0"
                 app:stl_drawDecorationAfterTab="false"
-                app:stl_indicatorColor="@color/theme_color"
+                app:stl_indicatorColor="@color/default_color"
                 app:stl_indicatorCornerRadius="@dimen/dp_6"
                 app:stl_indicatorInterpolation="linear"
                 app:stl_indicatorThickness="@dimen/dp_3"
@@ -32,8 +32,8 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/iv_search"
-                android:layout_width="@dimen/dp_44"
-                android:layout_height="@dimen/dp_44"
+                android:layout_width="@dimen/dp_52"
+                android:layout_height="@dimen/dp_52"
                 android:layout_marginStart="@dimen/dp_2"
                 android:layout_marginEnd="@dimen/dp_6"
                 android:paddingTop="@dimen/dp_2"
