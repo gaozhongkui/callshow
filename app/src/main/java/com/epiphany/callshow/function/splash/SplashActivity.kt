@@ -8,6 +8,7 @@ import com.epiphany.callshow.common.base.BaseActivity
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.common.utils.StatusBarUtil
 import com.epiphany.callshow.databinding.ActivitySplashLayoutBinding
+import com.epiphany.callshow.extensions.launch
 import com.epiphany.callshow.function.main.MainActivity
 
 class SplashActivity : BaseActivity<BaseViewModel, ActivitySplashLayoutBinding>() {
@@ -24,13 +25,15 @@ class SplashActivity : BaseActivity<BaseViewModel, ActivitySplashLayoutBinding>(
                 jumpMainAct()
             }
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
         binding.lottieView.playAnimation()
     }
 
     private fun jumpMainAct() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
+        launch(MainActivity::class.java, Intent.FLAG_ACTIVITY_CLEAR_TOP)
         finish()
     }
 }

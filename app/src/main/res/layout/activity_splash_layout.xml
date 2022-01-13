@@ -10,25 +10,43 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie_view"
-            android:layout_width="0dp"
+            android:layout_width="230dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.8"
+            app:layout_constraintVertical_bias="0.32"
             app:lottie_fileName="anim/video_camera.json" />
 
+
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            android:text="Welcome"
-            android:textSize="@dimen/sp_20"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textAllCaps="true"
+            android:text="@string/app_name"
+            android:textColor="@color/color_FF141414"
+            android:textSize="@dimen/sp_28"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lottie_view"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_13"
+            android:textAllCaps="true"
+            android:text="@string/splash_content"
+            android:textColor="@color/color_FF141414"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:ignore="HardcodedText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
