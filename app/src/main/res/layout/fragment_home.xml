@@ -38,9 +38,9 @@
                 android:layout_marginEnd="@dimen/dp_6"
                 android:paddingTop="@dimen/dp_2"
                 android:paddingBottom="@dimen/dp_2"
+
                 app:lottie_autoPlay="true"
-                app:lottie_fileName="anim/searchask_loop.json"
-                app:lottie_loop="true" />
+                app:lottie_fileName="anim/searchask_loop.json" />
         </LinearLayout>
 
         <androidx.viewpager.widget.ViewPager
