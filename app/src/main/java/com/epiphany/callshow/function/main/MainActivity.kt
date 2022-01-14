@@ -1,12 +1,12 @@
 package com.epiphany.callshow.function.main
 
+import androidx.viewpager.widget.ViewPager
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 import com.epiphany.callshow.R
 import com.epiphany.callshow.common.base.BaseActivity
 import com.epiphany.callshow.common.base.BaseViewModel
 import com.epiphany.callshow.databinding.ActivityMainBinding
-import com.epiphany.callshow.function.home.HomeFragment
 
 class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
 
@@ -24,13 +24,20 @@ class MainActivity : BaseActivity<BaseViewModel, ActivityMainBinding>() {
     }
 
     private fun initLayout() {
-        showHomeFragment()
-    }
-
-    private fun showHomeFragment() {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fl_content, HomeFragment.newInstance())
-        transaction.commit()
+        binding.viewPager.adapter = MainFragmentAdapter(supportFragmentManager)
+        binding.llBottomBar.setOnNavigationItemSelectedListener { item ->
+            binding.viewPager.currentItem = when (item.itemId) {
+                R.id.home -> 0
+                R.id.video -> 1
+                else -> 2
+            }
+            true
+        }
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                binding.llBottomBar.menu.getItem(position).isChecked = true
+            }
+        })
     }
 
 
