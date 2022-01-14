@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".function.main.MainActivity">
 
-        <FrameLayout
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/fl_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/ll_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            app:elevation="@dimen/dp_0"
+            app:itemIconSize="@dimen/dp_26"
+            app:itemIconTint="@drawable/text_home_tab_title"
+            app:itemTextColor="@drawable/text_home_tab_title"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/home_menu_bottom_navigation" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 </layout>
