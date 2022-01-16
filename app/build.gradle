@@ -30,10 +30,17 @@ android {
                 install "pydantic==1.4"
             }
         }
+        vectorDrawables {
+            useSupportLibrary true
+        }
     }
 
     dataBinding {
         enabled = true
+    }
+
+    buildFeatures {
+        compose true
     }
 
     signingConfigs {
@@ -67,6 +74,11 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
     }
 
     packagingOptions {
@@ -123,6 +135,11 @@ dependencies {
 
     //smart tab
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
+
+    //引入compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
 
     //权限库
     implementation 'pub.devrel:easypermissions:3.0.0'

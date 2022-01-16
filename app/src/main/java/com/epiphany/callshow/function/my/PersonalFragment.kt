@@ -1,20 +1,14 @@
 package com.epiphany.callshow.function.my
 
-import com.epiphany.callshow.R
-import com.epiphany.callshow.common.base.BaseFragment
-import com.epiphany.callshow.common.base.BaseViewModel
-import com.epiphany.callshow.databinding.FragmentPersonalLayoutBinding
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 
-class PersonalFragment : BaseFragment<BaseViewModel, FragmentPersonalLayoutBinding>() {
-    override fun getBindLayout(): Int {
-        return R.layout.fragment_personal_layout
-    }
+class PersonalFragment : Fragment() {
 
-    override fun getViewModelClass(): Class<BaseViewModel> {
-        return BaseViewModel::class.java
-    }
-
-    override fun initView() {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return null
     }
 }
