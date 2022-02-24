@@ -26,7 +26,6 @@
             android:background="@android:color/transparent"
             android:orientation="horizontal"
             app:elevation="@dimen/dp_0"
-            app:itemIconSize="@dimen/dp_26"
             app:itemIconTint="@drawable/text_home_tab_title"
             app:itemTextColor="@drawable/text_home_tab_title"
             app:labelVisibilityMode="labeled"
